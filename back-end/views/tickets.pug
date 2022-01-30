@@ -1,0 +1,28 @@
+html
+  head
+    title!= title
+  body
+    h1 Going through the received array of ticketsList
+      table(border='1')
+        thead
+          th Name
+          th dateCreted
+        tbody 
+          each ticket in ticketsList
+            tr
+              td #{ticket.name}
+              td #{ticket.dateCreted}
+    h1 Enter the details of a new ticket
+      form(action="/ticket/tickets" method="POST")
+        table(border='1')
+          thead
+            th Name
+            th dateCreted
+          tbody
+            td 
+              input(type="text", name="name")
+            td
+              input(type="text", name="dateCreted")
+            tr
+            td
+              button(type="submit") Submit
