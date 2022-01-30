@@ -1,7 +1,7 @@
 const db = require("../models");
 const bcrypt = require("bcrypt");
 const User = db.users;
-
+//Git test comment
 // Create and Save a new User
 exports.register = async (req, res) => {
   // Validate request
