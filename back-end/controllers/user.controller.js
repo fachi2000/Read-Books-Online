@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const User = db.users;
 //Git test comment
 // Create and Save a new User
+
 exports.register = async (req, res) => {
   // Validate request
   if (!req.body.email) {
@@ -28,7 +29,7 @@ exports.register = async (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          "AQUI " + err.message ||
+          "Here " + err.message ||
           "Some error occurred while creating the User.",
       });
     });
