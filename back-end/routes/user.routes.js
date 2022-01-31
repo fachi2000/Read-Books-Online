@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const { authUser, authRole } = require("../rboAuth");
+const { authUser, authRole } = require("../middleware/rboAuth");
 
 //Require controller
 var userController = require("../controllers/user.controller");
