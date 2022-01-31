@@ -1,3 +1,5 @@
+var validator = require("validator");
+
 module.exports = (mongoose) => {
   var User = mongoose.model(
     "user",
@@ -5,11 +7,13 @@ module.exports = (mongoose) => {
       email: {
         type: String,
         required: true,
-        unique: true,
+        lowercase: true,
+        //validate: [isEmail, "Please enter a valid email"],
       },
       password: {
         type: String,
         required: true,
+        minLength: [6, "Minimim password length is 6 characters"],
       },
       role: {
         type: String, //client, employee, admin
