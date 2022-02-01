@@ -3,7 +3,8 @@ module.exports = (mongoose) => {
     "tickets",
     mongoose.Schema({
       name: String,
-
+      validated: Boolean,
+      needsMoreInfo: Boolean,
       dateCreated: {
         type: Date,
         required: true,

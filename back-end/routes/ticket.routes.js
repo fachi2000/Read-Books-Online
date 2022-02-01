@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 
+const { authUser, authRole } = require("../middleware/rboAuth");
+
 //Require controller
 var ticketController = require("../controllers/ticket.controller");
 
@@ -9,7 +11,7 @@ router.get("/", function (req, res, next) {
 });
 
 // Create a new ticket
-router.post("/tickets/", ticketController.create);
+router.post("/create", ticketController.create);
 
 // Retrieve all tickets
 router.get("/tickets/", ticketController.findAll);

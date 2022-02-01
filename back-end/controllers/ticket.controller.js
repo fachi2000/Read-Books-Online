@@ -21,7 +21,8 @@ exports.create = (req, res) => {
 
   const ticket = new Ticket({
     name: req.body.name,
-    date: req.body.date,
+    validated: false,
+    needsMoreInfo: true,
   });
 
   ticket
@@ -31,7 +32,7 @@ exports.create = (req, res) => {
 
       // Now update the user by adding the association
       User.findByIdAndUpdate(
-        req.body.userid, // //We assume userid is an attribute in the JSON
+        req.body.userId, // //We assume userid is an attribute in the JSON
         { $push: { tickets: ticketData._id } },
         { new: true, useFindAndModify: false }
       ).then((userData) => {
@@ -103,14 +104,25 @@ exports.update = (req, res) => {
 
 // Delete a Ticket with the specified id in the request
 exports.delete = (req, res) => {
-  let myquery = { _id: req.params.id };
-  Ticket.findOneAndDelete(myquery, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Deleted Ticket : ", docs);
-    }
-  });
+  const id = req.params.id;
+
+  Ticket.findByIdAndRemove(id)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete Ticket with id=${id}. Maybe Ticket was not found!`,
+        });
+      } else {
+        res.send({
+          message: "Ticket was deleted successfully",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not delete Ticket with id=" + id,
+      });
+    });
 };
 
 // Delete all Ticket from the database.
