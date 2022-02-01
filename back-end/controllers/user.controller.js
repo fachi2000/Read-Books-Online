@@ -1,5 +1,7 @@
 const db = require("../models");
 const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+const config = require("../config/auth.config");
 const User = db.users;
 //Git test comment
 // Create and Save a new User
@@ -41,25 +43,34 @@ exports.login = async (req, res) => {
   if (user) {
     // check user password with hashed password stored in the database
     const validPassword = await bcrypt.compare(body.password, user.password);
-    if (validPassword) {
-      res.status(200).json({ message: "Valid password" });
-      req.curentUser = user;
-    } else {
-      res.status(400).json({ error: "Invalid Password" });
+    if (validPassword == false) {
+      return res.status(401).send({
+        accessToken: null,
+        message: "Invalid Password!",
+      });
     }
   } else {
-    res.status(401).json({ error: "User does not exist" });
+    return res.status(401).json({ error: "User does not exist" });
   }
-  console.log(currentUser);
+
+  var token = jwt.sign({ id: user.id }, config.secret, {
+    expiresIn: 43200, // 12 hours
+  });
+
+  res.status(200).send({
+    id: user._id,
+    email: user.email,
+    accessToken: token,
+  });
+  //req.currentUser = user;
 };
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-  console.log(currUser);
-  const username = req.query.email;
+  const email = req.query.email;
   //We use req.query.name to get query string from the Request and consider it as condition for findAll() method.
-  var condition = username
-    ? { username: { $regex: new RegExp(username), $options: "i" } }
+  var condition = email
+    ? { email: { $regex: new RegExp(email), $options: "i" } }
     : {};
 
   User.find(condition)
@@ -91,7 +102,7 @@ exports.findOne = (req, res) => {
 // Update a User by the id in the request
 exports.update = (req, res) => {
   let myquery = { _id: req.params.id };
-  let newUserName = req.body.username;
+  let newEmail = req.body.email;
   User.findOneAndUpdate(
     myquery,
     req.body,
@@ -103,7 +114,7 @@ exports.update = (req, res) => {
   );
   User.findOneAndUpdate(
     myquery,
-    { $set: { username: newUserName } },
+    { $set: { email: newEmail } },
     { new: true },
     (err, doc) => {
       if (err) {

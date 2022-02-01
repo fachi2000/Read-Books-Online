@@ -1,5 +1,3 @@
-var validator = require("validator");
-
 module.exports = (mongoose) => {
   var User = mongoose.model(
     "user",
@@ -8,7 +6,6 @@ module.exports = (mongoose) => {
         type: String,
         required: true,
         lowercase: true,
-        //validate: [isEmail, "Please enter a valid email"],
       },
       password: {
         type: String,
