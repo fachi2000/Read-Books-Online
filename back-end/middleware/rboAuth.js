@@ -6,7 +6,7 @@ ADMIN - admin@admin.com  |   789
 */
 
 function authUser(req, res, next) {
-  if (req.currentUser == null) {
+  if (req.user == null) {
     res.status(403);
     return res.send("You need to log in");
   }
@@ -15,7 +15,7 @@ function authUser(req, res, next) {
 
 function authRole(role) {
   return (req, res, next) => {
-    if (req.currentUser.role !== role) {
+    if (newRole.role !== role) {
       res.status(401);
       return res.send("You are not allowed");
     }

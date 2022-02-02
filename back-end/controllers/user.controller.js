@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 const User = db.users;
-//Git test comment
 // Create and Save a new User
 
 exports.register = async (req, res) => {
@@ -46,7 +45,7 @@ exports.login = async (req, res) => {
     if (validPassword == false) {
       return res.status(401).send({
         accessToken: null,
-        message: "Invalid Password!",
+        message: "Invalid Password",
       });
     }
   } else {
@@ -62,7 +61,6 @@ exports.login = async (req, res) => {
     email: user.email,
     accessToken: token,
   });
-  //req.currentUser = user;
 };
 
 // Retrieve all Users from the database.
