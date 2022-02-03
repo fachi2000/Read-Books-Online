@@ -3,8 +3,6 @@ const db = require("../models");
 const Ticket = db.tickets;
 const User = db.users;
 
-var querystring = require("querystring");
-
 //Welcome page
 exports.start = (response) => {
   response.writeHead(200, { "Content-type": "text/plain" });
