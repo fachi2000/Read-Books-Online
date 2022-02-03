@@ -3,7 +3,7 @@ const User = db.users;
 
 var express = require("express");
 var router = express.Router();
-const app = express();
+
 const { authUser, authRole } = require("../middleware/rboAuth");
 
 app.use(setUser);
@@ -27,16 +27,16 @@ router.post("/login", userController.login);
 router.get("/users", /*authRole("admin"),*/ userController.findAll);
 
 // Retrieve a single user with id
-router.get("/:id", userController.findOne);
+router.get("/:id", /*authRole("admin"),*/ userController.findOne);
 
 // Update a user with id
-router.put("/:id", userController.update);
+router.put("/:id", /*authRole("admin"),*/ userController.update);
 
 // Delete a user with id
-router.delete("/:id", userController.delete);
+router.delete("/:id", /*authRole("admin"),*/ userController.delete);
 
 // Delete all users of the database
-router.delete("/", userController.deleteAll);
+router.delete("/", /*userAuth, authRole("admin"),*/ userController.deleteAll);
 
 function setUser(req, res, next) {
   const body = req.body;
