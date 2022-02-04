@@ -28,7 +28,7 @@ class Login extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    const postURL = "http://localhost:3050/users/users/login"; //Our previously set up route in the backend
+    const postURL = "http://localhost:3050/user/login"; //Our previously set up route in the backend
     fetch(postURL, {
       method: "POST",
       headers: {
@@ -78,11 +78,6 @@ class Login extends Component {
               ></input>
             </form>
           </div>
-          <input
-            type="submit"
-            className="btn btn-success btn-block"
-            value="Sign up"
-          ></input>
         </div>
       </div>
     );

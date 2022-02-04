@@ -1,13 +1,19 @@
-import HomeClass from "./Home";
-import AddTicket from "./AddTicket";
-import SignUp from "./SignUp";
-import Login from "./Login";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 
 function App() {
   return (
-    <div className="App">
-      <SignUp />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/user/login" element={<Login />} />
+        <Route path="/user/register" element={<SignUp />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
 }
 

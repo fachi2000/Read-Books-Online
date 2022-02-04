@@ -2,21 +2,15 @@ import React, { useState } from "react";
 
 const AddTicket = () => {
   var [name, setName] = useState();
-  var [date, setDate] = useState();
 
   const nameUpdate = (event) => {
     // Dealing with name field changes to update our state
     setName(event.target.value);
   };
 
-  const dateUpdate = (event) => {
-    // Dealing with name field changes to update our state
-    setDate(event.target.value);
-  };
-
   const handleSubmit = () => {
     // Once the form has been submitted, this function will post to the backend
-    const postURL = "http://localhost:3050/ticket/tickets/"; //Our previously set up route in the backend
+    const postURL = "http://localhost:3050/ticket/create"; //Our previously set up route in the backend
     fetch(postURL, {
       method: "POST",
       headers: {

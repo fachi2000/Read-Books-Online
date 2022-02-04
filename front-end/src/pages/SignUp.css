@@ -1,31 +1,21 @@
 .SignUp {
   padding: 1%;
   position: absolute;
-  font-family: Georgia, serif;
-  background-color: #e3f1eb;
-  color: #67a17e;
+  font-family: Arial, Helvetica, sans-serif;
+
   width: 100%;
   height: 100%;
 }
 
-.SignUp .welcome {
-  display: flex;
-  margin: auto;
-  font-size: 20px;
-}
-
-.SignUp .welcome p {
-  width: 20%;
-}
-.SignUp .welcome .form-div {
+.SignUp .form-div {
   background-color: #99ddb3;
   color: #67a17e;
   border-radius: 20px;
   box-sizing: border-box;
   height: 340px;
-  padding: 20px;
+  padding: 30px;
   width: 640px;
-  margin-left: 10%;
+  margin: auto;
 }
 
 .btn {
