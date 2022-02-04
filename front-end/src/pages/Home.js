@@ -40,6 +40,7 @@ class Home extends Component {
           </thead>
           {this.displayTicketList(this.state.tickets)}
         </table>
+        <button>Request Books</button>
       </div>
     );
   }
