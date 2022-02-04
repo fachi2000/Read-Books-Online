@@ -1,87 +1,62 @@
-import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./Login.css";
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: "",
-    };
-    this.changeEmail = this.changeEmail.bind(this);
-    this.changePassword = this.changePassword.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthService from "../services/auth.service";
 
-  changeEmail(event) {
-    this.setState({
-      email: event.target.value,
-    });
-  }
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  changePassword(event) {
-    this.setState({
-      password: event.target.value,
-    });
-  }
+  const navigate = useNavigate();
 
-  onSubmit(event) {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await AuthService.login(email, password).then(
+        () => {
+          navigate("/home");
+          window.location.reload();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    const postURL = "http://localhost:3050/user/login"; //Our previously set up route in the backend
-    fetch(postURL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password,
-      }),
-    });
-
-    //window.location('/')
-    this.setState({
-      email: "",
-      password: "",
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <div className="Login">
-          <h2>Login up to Read Books Online!</h2>
-          <div className="form-div">
-            <form onSubmit={this.onSubmit}>
-              <label>E-mail</label>
-              <input
-                type="email"
-                onChange={this.changeEmail}
-                value={this.state.email}
-                className="form-control form-group"
-                required
-              ></input>
-              <label>Password</label>
-              <input
-                type="password"
-                onChange={this.changePassword}
-                value={this.state.password}
-                className="form-control form-group"
-                required
-              ></input>
-              <input
-                type="submit"
-                className="btn btn-success btn-block"
-                value="Log in"
-              ></input>
-            </form>
-          </div>
+  return (
+    <div>
+      <div className="Login">
+        <h2>Login up to Read Books Online!</h2>
+        <div className="form-div">
+          <form onSubmit={handleLogin}>
+            <label>E-mail</label>
+            <input
+              type="text"
+              value={email}
+              className="form-control form-group"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            ></input>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              className="form-control form-group"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            ></input>
+            <input
+              type="submit"
+              className="btn btn-success btn-block"
+              value="Log in"
+            ></input>
+          </form>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Login;
