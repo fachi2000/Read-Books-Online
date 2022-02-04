@@ -1,9 +1,7 @@
+const { authjwt } = require("../middleware");
+
 var express = require("express");
 var router = express.Router();
-
-const { authUser, authRole } = require("../middleware/rboAuth");
-
-const { authjwt } = require("../middleware");
 
 //Require controller
 var ticketController = require("../controllers/ticket.controller");

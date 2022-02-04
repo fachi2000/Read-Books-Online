@@ -40,7 +40,6 @@ const Home = () => {
         </thead>
       </table>
       <button className="btn btn-primary">Request ticket</button>
-      <button className="btn btn-danger">Log out</button>
     </div>
   );
 };

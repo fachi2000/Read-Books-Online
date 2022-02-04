@@ -23,42 +23,51 @@ function App() {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand">Read Books Online</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">
-                Home <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Features
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Pricing
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">
-                Disabled
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div className="container mt-3">
-        <Router>
+      <Router>
+        <nav className="navbar navbar-expand navbar-dark bg-dark">
+          <a class="navbar-brand">Read Books Online</a>
+          <div className="navbar-nav mr-auto">
+            {currentUser && (
+              <li className="nav-item">
+                <Link to={"/Home"} className="nav-link">
+                  Home
+                </Link>
+              </li>
+            )}
+          </div>
+
+          {currentUser ? (
+            <div className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <a href="/login" className="nav-link" onClick={logOut}>
+                  Logout
+                </a>
+              </li>
+            </div>
+          ) : (
+            <div className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link to={"/login"} className="nav-link">
+                  Login
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to={"/signup"} className="nav-link">
+                  Sign up
+                </Link>
+              </li>
+            </div>
+          )}
+        </nav>
+        <div className="container mt-3">
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 }

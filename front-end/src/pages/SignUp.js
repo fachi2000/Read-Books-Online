@@ -29,7 +29,7 @@ const Signup = () => {
   };
   return (
     <div className="SignUp">
-      <h2>Sign up to Read Books Online!</h2>
+      <h2>Sign up to Read Books Online</h2>
       <br></br>
       <div className="form-div">
         <form onSubmit={handleSignup}>

@@ -1,6 +1,3 @@
-const db = require("../models");
-const User = db.users;
-
 const { authjwt } = require("../middleware");
 
 var express = require("express");

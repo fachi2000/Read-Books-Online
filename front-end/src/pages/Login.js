@@ -5,6 +5,14 @@ import AuthService from "../services/auth.service";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const errorDiv = error ? (
+    <div className="error">
+      <p class="text-danger">{error}</p>
+    </div>
+  ) : (
+    ""
+  );
 
   const navigate = useNavigate();
 
@@ -17,7 +25,7 @@ const Login = () => {
           window.location.reload();
         },
         (error) => {
-          console.log(error);
+          setError("Invalid e-mail or passord");
         }
       );
     } catch (err) {
@@ -27,12 +35,12 @@ const Login = () => {
 
   return (
     <div className="Login">
-      <h2>Login up to Read Books Online!</h2>
+      <h2>Login up to Read Books Online</h2>
       <div className="form-div">
         <form onSubmit={handleLogin}>
           <label>E-mail</label>
           <input
-            type="text"
+            type="email"
             value={email}
             className="form-control form-group"
             onChange={(e) => setEmail(e.target.value)}
@@ -46,6 +54,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           ></input>
+          {errorDiv}
           <input
             type="submit"
             className="btn btn-success btn-block"
