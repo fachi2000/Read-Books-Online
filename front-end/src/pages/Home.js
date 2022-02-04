@@ -1,49 +1,48 @@
-import React, { Component } from "react";
-import "./Home.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from "react";
+import TicketsService from "../services/ticket.service";
+import AuthService from "../services/auth.service";
+import { useNavigate } from "react-router-dom";
 
-class Home extends Component {
-  state = {
-    tickets: [],
-    error: null,
-  };
+const Home = () => {
+  const [privateTickets, setPrivateTickets] = useState([]);
 
-  componentDidMount = () => {
-    fetch("http://localhost:3050/ticket/tickets/")
-      .then((response) => response.json())
-      .then((data) => this.setState({ tickets: data }));
-  };
+  const navigate = useNavigate();
 
-  displayTicketList = (tickets) => {
-    if (!tickets.length) return null;
-
-    return tickets.map(({ name, date, index }) => (
-      <tbody key={index}>
-        <tr>
-          <td>{name}</td>
-          <td>{date}</td>
-        </tr>
-      </tbody>
-    ));
-  };
-
-  render() {
-    return (
-      <div className="Home">
-        <h4>Here are your tickets:</h4>
-        <table className="table table-sm table-bordered table-hover">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          {this.displayTicketList(this.state.tickets)}
-        </table>
-        <button>Request Books</button>
-      </div>
+  useEffect(() => {
+    TicketsService.getTickets().then(
+      (response) => {
+        setPrivateTickets(response.data);
+      },
+      (error) => {
+        console.log("Private page", error.response);
+        // Invalid token
+        if (error.response && error.response.status === 403) {
+          AuthService.logout();
+          navigate("/login");
+          window.location.reload();
+        }
+      }
     );
-  }
-}
+  }, []);
+
+  return (
+    <div className="Home">
+      <h3>
+        <h3>{privateTickets.map((post) => post.content)}</h3>
+      </h3>
+      <h4>Here are your tickets:</h4>
+      <table className="table table-sm table-bordered table-hover">
+        <thead className="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+      </table>
+      <button className="btn btn-primary">Request ticket</button>
+      <button className="btn btn-danger">Log out</button>
+    </div>
+  );
+};
 
 export default Home;

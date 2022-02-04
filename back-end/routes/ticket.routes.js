@@ -2,11 +2,8 @@ var express = require("express");
 var router = express.Router();
 
 const { authUser, authRole } = require("../middleware/rboAuth");
-const {
-  canViewTicket,
-  scopedTickets,
-  canDeleteTicket,
-} = require("../middleware/ticketPermission");
+
+const { authjwt } = require("../middleware");
 
 //Require controller
 var ticketController = require("../controllers/ticket.controller");
@@ -19,7 +16,7 @@ router.get("/", function (req, res, next) {
 router.post("/create", ticketController.create);
 
 // Retrieve all tickets
-router.get("/tickets/", ticketController.findAll);
+router.get("/tickets/", [authjwt.verifyToken], ticketController.findAll);
 
 // Retrieve a single ticket with id
 router.get("/tickets/:id", ticketController.findOne);
