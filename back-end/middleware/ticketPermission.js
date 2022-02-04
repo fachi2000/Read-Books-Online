@@ -17,7 +17,7 @@ function canDeleteTicket(user, project) {
 }
 
 module.exports = {
-  canViewProject,
-  scopedProjects,
-  canDeleteProject,
+  canViewTicket,
+  scopedTickets,
+  canDeleteTicket,
 };

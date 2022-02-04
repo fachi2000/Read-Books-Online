@@ -1,12 +1,10 @@
 const db = require("../models");
 const User = db.users;
 
+const { authjwt } = require("../middleware");
+
 var express = require("express");
 var router = express.Router();
-
-const { authUser, authRole } = require("../middleware/rboAuth");
-
-app.use(setUser);
 
 var userController = require("../controllers/user.controller");
 
@@ -24,7 +22,7 @@ router.post("/login", userController.login);
 //router.post("/register", userController.create);
 
 // Retrieve all users
-router.get("/users", /*authRole("admin"),*/ userController.findAll);
+router.get("/users", [authjwt.verifyToken], userController.findAll);
 
 // Retrieve a single user with id
 router.get("/:id", /*authRole("admin"),*/ userController.findOne);
@@ -37,14 +35,5 @@ router.delete("/:id", /*authRole("admin"),*/ userController.delete);
 
 // Delete all users of the database
 router.delete("/", /*userAuth, authRole("admin"),*/ userController.deleteAll);
-
-function setUser(req, res, next) {
-  const body = req.body;
-  const userId = User.findOne({ _id: body.userId });
-  if (userId) {
-    req.currentUser = User.find((user) => user._id === userId);
-  }
-  next();
-}
 
 module.exports = router;
