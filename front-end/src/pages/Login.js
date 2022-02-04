@@ -25,7 +25,7 @@ const Login = () => {
           window.location.reload();
         },
         (error) => {
-          setError("Invalid e-mail or passord");
+          setError("Invalid e-mail or password");
         }
       );
     } catch (err) {

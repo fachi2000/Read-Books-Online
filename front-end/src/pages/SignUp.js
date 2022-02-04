@@ -6,6 +6,14 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
+  const [error, setError] = useState(null);
+  const errorDiv = error ? (
+    <div className="error">
+      <p class="text-danger">{error}</p>
+    </div>
+  ) : (
+    ""
+  );
 
   const navigate = useNavigate();
 
@@ -20,7 +28,7 @@ const Signup = () => {
           window.location.reload();
         },
         (error) => {
-          console.log(error);
+          setError("This user already exitsts or passwords don't match");
         }
       );
     } catch (err) {
@@ -35,7 +43,7 @@ const Signup = () => {
         <form onSubmit={handleSignup}>
           <label>E-mail</label>
           <input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="form-control form-group"
@@ -57,6 +65,7 @@ const Signup = () => {
             className="form-control form-group"
             required
           ></input>
+          {errorDiv}
           <input
             type="submit"
             className="btn btn-success btn-block"
