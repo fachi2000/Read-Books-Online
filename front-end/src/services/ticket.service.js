@@ -7,8 +7,23 @@ const getTickets = () => {
   return axios.get(API_URL + "/tickets", { headers: authHeader() });
 };
 
+const createTicket = (name, userId) => {
+  return axios.post(API_URL + "/create", { name, userId });
+};
+
+const deleteTicket = (ticketId) => {
+  return axios.delete(API_URL + "/tickets/" + ticketId);
+};
+
+const updateTicket = (ticketId) => {
+  return axios.put(API_URL + "/tickets", { ticketId });
+};
+
 const ticketService = {
   getTickets,
+  createTicket,
+  deleteTicket,
+  updateTicket,
 };
 
 export default ticketService;

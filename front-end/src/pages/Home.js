@@ -27,21 +27,17 @@ const Home = () => {
   const handleRequest = (e) => {
     e.preventDefault();
     if (bookName !== "") {
-      axios
-        .post("http://localhost:3050/ticket/create", {
-          name: bookName,
-          userId: user.id,
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      TicketsService.createTicket(bookName, user.id);
       setError("Request submitted succesfully");
     } else {
       setError("Please enter a value");
     }
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    console.log(privateTickets[0]._id);
+    TicketsService.deleteTicket(privateTickets[0]._id);
   };
 
   useEffect(() => {
@@ -63,22 +59,31 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <h4>Welcome, here are all requests:</h4>
+      <h1 class="display-5">Welcome, here are all requests:</h1>
       {privateTickets.map(({ name, dateCreated, validated, index }) => (
         <div key={index}>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <b>Book name:</b> {name} <br></br>
-              <b>Date requested: </b>
-              {dateCreated.slice(0, 10)} at {dateCreated.slice(11, 16)}
-              <br></br>
-              <b>Validated: </b>
-              {validated.toString()}
-            </li>
-          </ul>
-          <br></br>
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5>{name}</h5>
+              <h6>
+                Requested: {dateCreated.slice(0, 10)} at{" "}
+                {dateCreated.slice(11, 16)}
+              </h6>
+            </div>
+            <div>
+              <button
+                type="button"
+                class="btn btn-danger"
+                onClick={handleDelete}
+              >
+                Cancel Request
+              </button>
+            </div>
+          </div>
+          <hr></hr>
         </div>
       ))}
+
       <Button variant="primary" onClick={handleShow}>
         Request new book
       </Button>
