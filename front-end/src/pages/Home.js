@@ -34,14 +34,13 @@ const Home = () => {
     }
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = (e, _id) => {
     e.preventDefault();
-    console.log(privateTickets[0]._id);
-    TicketsService.deleteTicket(privateTickets[0]._id);
+    TicketsService.deleteTicket(_id);
   };
 
   useEffect(() => {
-    TicketsService.getTickets().then(
+    TicketsService.getTickets(user.id).then(
       (response) => {
         setPrivateTickets(response.data);
       },
@@ -59,8 +58,8 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <h1 class="display-5">Welcome, here are all requests:</h1>
-      {privateTickets.map(({ name, dateCreated, validated, index }) => (
+      <h1 class="display-5">Welcome {user.role}, here are all requests:</h1>
+      {privateTickets.map(({ _id, name, dateCreated, validated, index }) => (
         <div key={index}>
           <div class="d-flex justify-content-between">
             <div>
@@ -74,7 +73,7 @@ const Home = () => {
               <button
                 type="button"
                 class="btn btn-danger"
-                onClick={handleDelete}
+                onClick={(e) => handleDelete(e, _id)}
               >
                 Cancel Request
               </button>

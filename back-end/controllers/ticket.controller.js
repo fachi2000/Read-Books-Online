@@ -50,6 +50,8 @@ exports.create = (req, res) => {
 // Retrieve all Tickets from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
+  const id = req.userId;
+  console.log(id);
   //We use req.query.name to get query string from the Request and consider it as condition for findAll() method.
   var condition = name
     ? { name: { $regex: new RegExp(name), $options: "i" } }
