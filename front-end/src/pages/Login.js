@@ -55,6 +55,7 @@ const Login = () => {
             required
           ></input>
           {errorDiv}
+          <br></br>
           <input
             type="submit"
             className="btn btn-success btn-block"

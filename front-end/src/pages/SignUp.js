@@ -19,20 +19,24 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    try {
-      await AuthService.signup(email, password).then(
-        (response) => {
-          // check for token and user already exists with 200
-          //   console.log("Sign up successfully", response);
-          navigate("/home");
-          window.location.reload();
-        },
-        (error) => {
-          setError("This user already exitsts or passwords don't match");
-        }
-      );
-    } catch (err) {
-      console.log(err);
+    if (password === repassword) {
+      try {
+        await AuthService.signup(email, password).then(
+          (response) => {
+            // check for token and user already exists with 200
+            //   console.log("Sign up successfully", response);
+            navigate("/home");
+            window.location.reload();
+          },
+          (error) => {
+            setError("This user already exitsts");
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      setError("Passwords don't match");
     }
   };
   return (
@@ -66,6 +70,7 @@ const Signup = () => {
             required
           ></input>
           {errorDiv}
+          <br></br>
           <input
             type="submit"
             className="btn btn-success btn-block"
