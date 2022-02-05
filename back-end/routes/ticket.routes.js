@@ -14,7 +14,7 @@ router.get("/", function (req, res, next) {
 router.post("/create", ticketController.create);
 
 // Retrieve all tickets
-router.get("/tickets/", [authjwt.verifyToken], ticketController.findAll);
+router.get("/tickets", [authjwt.verifyToken], ticketController.findAll);
 
 // Retrieve a single ticket with id
 router.get("/tickets/:id", ticketController.findOne);

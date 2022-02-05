@@ -25,11 +25,11 @@ function App() {
     <div>
       <Router>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <a class="navbar-brand">Read Books Online</a>
+          <a class="navbar-brand"> Read Books Online</a>
           <div className="navbar-nav mr-auto">
             {currentUser && (
               <li className="nav-item">
-                <Link to={"/Home"} className="nav-link">
+                <Link to={"/home"} className="nav-link">
                   Home
                 </Link>
               </li>
