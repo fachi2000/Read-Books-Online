@@ -90,7 +90,6 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   //let myquery = { _id: req.body.id };
   let myquery = { _id: req.params.id };
-  console.log(myquery);
   Ticket.findOneAndUpdate(
     myquery,
     req.body,
