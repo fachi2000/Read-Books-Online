@@ -58,7 +58,7 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <h1 class="display-5">Welcome {user.role}, here are all requests:</h1>
+      <h1 class="display-5">Welcome, here are all requests:</h1>
       {privateTickets.map(({ _id, name, dateCreated, validated, index }) => (
         <div key={index}>
           <div class="d-flex justify-content-between">
