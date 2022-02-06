@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require("../app");
+var { app, chatSocket } = require("../app");
 var debug = require("debug")("rbo:server");
 var http = require("http");
 
@@ -20,6 +20,7 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+chatSocket.attach(server);
 
 /**
  * Listen on provided port, on all network interfaces.
