@@ -3,8 +3,8 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:3050/ticket";
 
-const getTickets = (userId) => {
-  return axios.get(API_URL + "/tickets", { userId, headers: authHeader() });
+const getTickets = (/*userId*/) => {
+  return axios.get(API_URL + "/tickets", { /*userId,*/ headers: authHeader() });
 };
 
 const createTicket = (name, userId) => {

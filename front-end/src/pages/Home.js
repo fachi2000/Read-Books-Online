@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import TicketsService from "../services/ticket.service";
 import AuthService from "../services/auth.service";
 import axios from "axios";
@@ -40,7 +40,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    TicketsService.getTickets(user.id).then(
+    TicketsService.getTickets(/*user.id*/).then(
       (response) => {
         setPrivateTickets(response.data);
       },
@@ -55,10 +55,19 @@ const Home = () => {
       }
     );
   }, []);
+  console.log(privateTickets);
 
   return (
     <div className="Home">
       <h1 class="display-5">Welcome, here are all requests:</h1>
+
+      <input
+        style={{ width: 200 }}
+        class="form-control"
+        placeholder="Search request..."
+        type="text"
+      ></input>
+      <br></br>
       {privateTickets.map(({ _id, name, dateCreated, validated, index }) => (
         <div key={index}>
           <div class="d-flex justify-content-between">
