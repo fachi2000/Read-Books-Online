@@ -22,15 +22,18 @@ router.post("/login", userController.login);
 router.get("/users", [authjwt.verifyToken], userController.findAll);
 
 // Retrieve a single user with id
-router.get("/:id", /*authRole("admin"),*/ userController.findOne);
+router.get("/users/:id", /*authRole("admin"),*/ userController.findOne);
 
 // Update a user with id
-router.put("/:id", /*authRole("admin"),*/ userController.update);
+router.put("/users/:id", /*authRole("admin"),*/ userController.update);
 
 // Delete a user with id
-router.delete("/:id", /*authRole("admin"),*/ userController.delete);
+router.delete("/users/:id", /*authRole("admin"),*/ userController.delete);
 
 // Delete all users of the database
-router.delete("/", /*userAuth, authRole("admin"),*/ userController.deleteAll);
+router.delete(
+  "/users",
+  /*userAuth, authRole("admin"),*/ userController.deleteAll
+);
 
 module.exports = router;

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
-import TicketsService from "../services/ticket.service";
+import { Modal, Button, Dropdown } from "react-bootstrap";
+import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 
 const Home = () => {
-  const [privateTickets, setPrivateTickets] = useState([]);
+  const [privateUsers, setPrivateUsers] = useState([]);
 
   const [reqShow, setRequestShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
 
-  const [ticketId, setTicketId] = useState("");
+  const [userId, setUserId] = useState("");
 
   const [msg, setMsg] = useState(null);
   const msgDiv = msg ? (
@@ -22,8 +22,13 @@ const Home = () => {
   ) : (
     ""
   );
-  const [bookName, setBookName] = useState("");
-  const [newBookName, setNewBookName] = useState("");
+
+  //admin can create an account
+  const [email, setEmail] = useState("");
+  const [psw, setPsw] = useState("");
+
+  //New role for user selected
+  const [newRole, setNewRole] = useState("");
 
   const handleRequestClose = () => setRequestShow(false);
   const handleRequestShow = () => {
@@ -34,15 +39,21 @@ const Home = () => {
   const handleEditClose = () => setEditShow(false);
   const handleEditShow = (e, id) => {
     setMsg("");
-    setTicketId(id);
+    setUserId(id);
+    setNewRole("Choose Role");
     setEditShow(true);
   };
 
   const handleDeleteClose = () => setDeleteShow(false);
   const handleDeleteShow = (e, id) => {
     setMsg("");
-    setTicketId(id);
+    setUserId(id);
     setDeleteShow(true);
+  };
+
+  const handleNewRole = (e) => {
+    setNewRole(e);
+    console.log(e);
   };
 
   const navigate = useNavigate();
@@ -51,8 +62,8 @@ const Home = () => {
 
   const handleRequest = (e) => {
     e.preventDefault();
-    if (bookName !== "") {
-      TicketsService.createTicket(bookName, user.id);
+    if (email !== "" || psw !== "") {
+      UserService.createUser(email, psw);
       setMsg("Request submitted succesfully");
     } else {
       setMsg("Please enter a value");
@@ -61,24 +72,25 @@ const Home = () => {
 
   const handleDelete = (e, _id) => {
     e.preventDefault();
-    TicketsService.deleteTicket(_id);
+    UserService.deleteUser(_id);
     setMsg("Deleted succesfully");
   };
 
-  const handleEdit = (e, ticketId, newName) => {
+  const handleEdit = (e, userId, role) => {
     e.preventDefault();
-    if (newBookName !== "") {
-      TicketsService.updateTicket(ticketId, newName);
+    console.log(newRole);
+    if (newRole !== "" && newRole !== "Choose Role") {
+      UserService.updateUser(userId, role.toLowerCase());
       setMsg("Updated succesfully");
     } else {
-      setMsg("Please enter a value");
+      setMsg("Please choose a role");
     }
   };
 
   useEffect(() => {
-    TicketsService.getTickets(/*user.id*/).then(
+    UserService.getUsers(/*user.id*/).then(
       (response) => {
-        setPrivateTickets(response.data);
+        setPrivateUsers(response.data);
       },
       (error) => {
         console.log("Private page", error.response);
@@ -94,7 +106,7 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <h1 class="display-5">Welcome, here are all requests:</h1>
+      <h1 class="display-5">Admin, here are all users:</h1>
       <input
         style={{ width: 200 }}
         class="form-control"
@@ -102,23 +114,20 @@ const Home = () => {
         type="text"
       ></input>
       <br></br>
-      {privateTickets.map(({ _id, name, dateCreated, validated, index }) => (
+      {privateUsers.map(({ _id, email, dateCreated, role, index }) => (
         <div key={index}>
           <div class="d-flex justify-content-between">
             <div>
-              <h5>{name}</h5>
+              <h5>{email}</h5>
               <h6>
-                Requested: {dateCreated.slice(0, 10)} at{" "}
+                User created: {dateCreated.slice(0, 10)} at{" "}
                 {dateCreated.slice(11, 16)}
               </h6>
-              <h6>
-                Validated:{" "}
-                <span style={{ color: "#2986cc" }}>{validated.toString()}</span>
-              </h6>
+              <h6>Role: {role}</h6>
             </div>
-            <div>Created by:</div>
+
             <div>
-              <div className="mb-1">
+              <div class="mb-1">
                 <Button
                   variant="primary"
                   onClick={(e) => handleEditShow(e, _id)}
@@ -126,7 +135,6 @@ const Home = () => {
                   <BsFillPencilFill />
                 </Button>
               </div>
-
               <Button
                 variant="danger"
                 onClick={(e) => handleDeleteShow(e, _id)}
@@ -138,21 +146,25 @@ const Home = () => {
           <hr></hr>
         </div>
       ))}
+
       <Button variant="primary" onClick={handleRequestShow}>
-        Request new book
+        Create new user
       </Button>
+
       <Modal show={editShow} onHide={handleEditClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit request</Modal.Title>
+          <Modal.Title>Edit user role</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Enter new information:
-          <input
-            type="text"
-            value={newBookName}
-            className="form-control form-group"
-            onChange={(e) => setNewBookName(e.target.value)}
-          ></input>
+          <Dropdown onSelect={handleNewRole}>
+            Please select the new role for the user:
+            <Dropdown.Toggle variant="light">{newRole}</Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item eventKey="Client">Client</Dropdown.Item>
+              <Dropdown.Item eventKey="Employee">Employee</Dropdown.Item>
+              <Dropdown.Item eventKey="Admin">Admin</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
           {msgDiv}
         </Modal.Body>
         <Modal.Footer>
@@ -161,7 +173,7 @@ const Home = () => {
           </Button>
           <Button
             variant="primary"
-            onClick={(e) => handleEdit(e, ticketId, newBookName)}
+            onClick={(e) => handleEdit(e, userId, newRole)}
           >
             Update
           </Button>
@@ -170,15 +182,22 @@ const Home = () => {
 
       <Modal show={reqShow} onHide={handleRequestClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Request new book</Modal.Title>
+          <Modal.Title>Create new user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Enter book name:
+          Enter email:
           <input
-            type="text"
-            value={bookName}
+            type="email"
+            value={email}
             className="form-control form-group"
-            onChange={(e) => setBookName(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
+          Enter Password:
+          <input
+            type="password"
+            value={psw}
+            className="form-control form-group"
+            onChange={(e) => setPsw(e.target.value)}
           ></input>
           {msgDiv}
         </Modal.Body>
@@ -187,17 +206,17 @@ const Home = () => {
             Cancel
           </Button>
           <Button variant="primary" onClick={handleRequest}>
-            Request
+            Create
           </Button>
         </Modal.Footer>
       </Modal>
 
       <Modal show={deleteShow} onHide={handleDeleteClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Delete request</Modal.Title>
+          <Modal.Title>Delete user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete this request?
+          Are you sure you want to delete this user?
           {msgDiv}
         </Modal.Body>
 
@@ -205,7 +224,7 @@ const Home = () => {
           <Button variant="secondary" onClick={handleDeleteClose}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={(e) => handleDelete(e, ticketId)}>
+          <Button variant="danger" onClick={(e) => handleDelete(e, userId)}>
             Delete
           </Button>
         </Modal.Footer>

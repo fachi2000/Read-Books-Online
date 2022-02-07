@@ -3,6 +3,8 @@ import AuthService from "./services/auth.service";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
+import Chat from "./pages/Chat";
+import AdminPage from "./pages/AdminPage";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 
@@ -36,6 +38,36 @@ function App() {
             )}
           </div>
 
+          <div className="navbar-nav mr-auto">
+            {currentUser && currentUser.role === "admin" && (
+              <li className="nav-item">
+                <Link to={"/admin"} className="nav-link">
+                  Users
+                </Link>
+              </li>
+            )}
+          </div>
+
+          <div className="navbar-nav mr-auto">
+            {currentUser && currentUser.role === "client" && (
+              <li className="nav-item">
+                <Link to={"/chat"} className="nav-link">
+                  Chat
+                </Link>
+              </li>
+            )}
+          </div>
+
+          <div className="navbar-nav mr-auto">
+            {currentUser && currentUser.role === "employee" && (
+              <li className="nav-item">
+                <Link to={"/chat"} className="nav-link">
+                  Chat
+                </Link>
+              </li>
+            )}
+          </div>
+
           {currentUser ? (
             <div className="navbar-nav ms-auto">
               <li className="nav-item">
@@ -63,6 +95,8 @@ function App() {
         <div className="container mt-3">
           <Routes>
             <Route path="/home" element={<Home />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>

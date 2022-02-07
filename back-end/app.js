@@ -4,6 +4,12 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+const { InMemoryMessageStore } = require("./messageStore");
+const messageStore = new InMemoryMessageStore();
+
+//chat controller
+var chatController = require("./controllers/chat.controller");
+
 // Adding extra modules
 var bodyParser = require("body-parser");
 var cors = require("cors");
@@ -14,15 +20,15 @@ var userRouter = require("./routes/user.routes");
 
 var chatSocket = require("socket.io")({
   cors: {
-    origins: ["http://localhost:8080"],
+    origins: ["http://localhost:3000"],
   },
 });
 // Importing the chat controller
-var chatController = require("./controllers/chat.controller");
 
 var chat = chatSocket
   .of("/chat") //We are defining an endpoint for the chat
   .on("connection", function (socket) {
+    console.log(socket.id);
     chatController.respond(chat, socket);
   });
 
