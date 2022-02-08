@@ -3,7 +3,7 @@ import { Modal, Button, Dropdown } from "react-bootstrap";
 import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
-import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
+import { BsFillTrashFill, BsFillPencilFill, BsSearch } from "react-icons/bs";
 
 const Home = () => {
   const [privateUsers, setPrivateUsers] = useState([]);
@@ -107,12 +107,18 @@ const Home = () => {
   return (
     <div className="Home">
       <h1 class="display-5">Admin, here are all users:</h1>
-      <input
-        style={{ width: 200 }}
-        class="form-control"
-        placeholder="Search request..."
-        type="text"
-      ></input>
+
+      <div class="d-flex flex-row">
+        <input
+          style={{ width: 200 }}
+          class="form-control"
+          placeholder="Search user..."
+          type="text"
+        ></input>
+        <Button variant="light">
+          <BsSearch />
+        </Button>
+      </div>
       <br></br>
       {privateUsers.map(({ _id, email, dateCreated, role, index }) => (
         <div key={index}>

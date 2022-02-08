@@ -7,6 +7,7 @@ import {
   BsFillTrashFill,
   BsFillPencilFill,
   BsCheckCircleFill,
+  BsSearch,
 } from "react-icons/bs";
 
 const Home = () => {
@@ -126,12 +127,17 @@ const Home = () => {
   return (
     <div className="Home">
       <h1 class="display-5">Welcome, here are all requests:</h1>
-      <input
-        style={{ width: 200 }}
-        class="form-control"
-        placeholder="Search request..."
-        type="text"
-      ></input>
+      <div class="d-flex flex-row">
+        <input
+          style={{ width: 200 }}
+          class="form-control"
+          placeholder="Search request..."
+          type="text"
+        ></input>
+        <Button variant="light">
+          <BsSearch />
+        </Button>
+      </div>
       <br></br>
       {privateTickets.map(
         ({
@@ -156,16 +162,18 @@ const Home = () => {
                   Requested: {dateCreated.slice(0, 10)} at{" "}
                   {dateCreated.slice(11, 16)}
                 </h6>
-                <h6>
-                  Validated by:
-                  <span style={{ color: "#2986cc" }}> {validatedBy}</span>
-                </h6>
-                <h6>
-                  Validation date:{" "}
-                  {validationDate && validationDate.slice(0, 10)}
-                  {validationDate && " at "}
-                  {validationDate && validationDate.slice(11, 16)}
-                </h6>
+                {validatedBy && (
+                  <h6>
+                    Validated by:{" "}
+                    <span style={{ color: "#2986cc" }}> {validatedBy}</span>
+                  </h6>
+                )}
+                {validatedBy && (
+                  <h6>
+                    Validation date: {validationDate.slice(0, 10)}{" "}
+                    {validationDate && validationDate.slice(11, 16)}
+                  </h6>
+                )}
                 <h6>Needs more information: {needsMoreInfo.toString()}</h6>
               </div>
               <div>
@@ -200,9 +208,12 @@ const Home = () => {
           </div>
         )
       )}
-      <Button variant="primary" onClick={handleRequestShow}>
-        Request new book
-      </Button>
+      {user && user.role === "client" && (
+        <Button variant="primary" onClick={handleRequestShow}>
+          Request new book
+        </Button>
+      )}
+
       <Modal show={editShow} onHide={handleEditClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit request</Modal.Title>
