@@ -87,7 +87,7 @@ const Home = () => {
     e.preventDefault();
 
     TicketsService.validateTicket(ticketId, user.email);
-    setMsg("Request submitted succesfully");
+    setMsg("Ticket has been validated");
   };
 
   const handleDelete = (e, _id) => {
@@ -162,7 +162,8 @@ const Home = () => {
                 </h6>
                 <h6>
                   Validation date:{" "}
-                  {validationDate && validationDate.slice(0, 10)}{" "}
+                  {validationDate && validationDate.slice(0, 10)}
+                  {validationDate && " at "}
                   {validationDate && validationDate.slice(11, 16)}
                 </h6>
                 <h6>Needs more information: {needsMoreInfo.toString()}</h6>
@@ -181,13 +182,18 @@ const Home = () => {
                     <BsFillPencilFill />
                   </Button>
                 </div>
-
-                <Button
-                  variant="danger"
-                  onClick={(e) => handleDeleteShow(e, _id)}
-                >
-                  <BsFillTrashFill />
-                </Button>
+                {!validationDate ||
+                user.role == "admin" ||
+                user.role == "employee" ? (
+                  <Button
+                    variant="danger"
+                    onClick={(e) => handleDeleteShow(e, _id)}
+                  >
+                    <BsFillTrashFill />
+                  </Button>
+                ) : (
+                  <p></p>
+                )}
               </div>
             </div>
             <hr></hr>
