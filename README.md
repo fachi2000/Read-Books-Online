@@ -14,3 +14,6 @@
 #6: Now, in the 'front-end' folder, run the command 'npm start' to run the front-end
 #7: Open your favourite browser (GC is recommended) in the URL put the following -> 'http://localhost:3000'
 #8: You should be able to now use the application
+
+*WARNING* 
+Some networks will block the server from running, if this is an issue, try sharing your mobile data.
