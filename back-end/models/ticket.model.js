@@ -4,10 +4,7 @@ module.exports = (mongoose) => {
     mongoose.Schema({
       name: String,
       validatedBy: String,
-      validationDate: {
-        type: Date,
-        default: Date.now,
-      },
+      validationDate: Date,
       needsMoreInfo: Boolean,
       dateCreated: {
         type: Date,

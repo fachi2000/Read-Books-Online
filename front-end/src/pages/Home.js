@@ -17,11 +17,11 @@ const Home = () => {
   const [editShow, setEditShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
 
-  const renderValidationButton = () => {
+  const renderValidationButton = (_id) => {
     if (user.role === "employee" || user.role === "admin") {
       return (
         <div className="mb-1">
-          <Button variant="success" onClick={handleValidateShow}>
+          <Button variant="success" onClick={(e) => handleValidateShow(e, _id)}>
             <BsCheckCircleFill />
           </Button>
         </div>
@@ -49,9 +49,9 @@ const Home = () => {
   };
 
   const handleValidateClose = () => setValidateShow(false);
-  const handleValidateShow = (e) => {
+  const handleValidateShow = (e, id) => {
     setMsg("");
-    //setTicketId(id);
+    setTicketId(id);
     setValidateShow(true);
   };
 
@@ -85,12 +85,9 @@ const Home = () => {
 
   const handleValidation = (e) => {
     e.preventDefault();
-    if (bookName !== "") {
-      TicketsService.createTicket(bookName, user.email);
-      setMsg("Request submitted succesfully");
-    } else {
-      setMsg("Please enter a value");
-    }
+
+    TicketsService.validateTicket(ticketId, user.email);
+    setMsg("Request submitted succesfully");
   };
 
   const handleDelete = (e, _id) => {
@@ -110,7 +107,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    TicketsService.getTickets(/*user.id*/).then(
+    TicketsService.getTickets(user).then(
       (response) => {
         setPrivateTickets(response.data);
       },
@@ -161,16 +158,20 @@ const Home = () => {
                 </h6>
                 <h6>
                   Validated by:
-                  <span style={{ color: "#2986cc" }}>{validatedBy}</span>
+                  <span style={{ color: "#2986cc" }}> {validatedBy}</span>
                 </h6>
-                <h6>Validation date: {validationDate}</h6>
+                <h6>
+                  Validation date:{" "}
+                  {validationDate && validationDate.slice(0, 10)}{" "}
+                  {validationDate && validationDate.slice(11, 16)}
+                </h6>
                 <h6>Needs more information: {needsMoreInfo.toString()}</h6>
               </div>
               <div>
                 <b>Created by:</b> {userId}
               </div>
               <div>
-                {renderValidationButton()}
+                {renderValidationButton(_id)}
 
                 <div className="mb-1">
                   <Button
@@ -237,7 +238,7 @@ const Home = () => {
           </Button>
           <Button
             variant="success"
-            onClick={(e) => handleEdit(e, ticketId, newBookName)}
+            onClick={(e) => handleValidation(e, ticketId, user.email)}
           >
             Validate
           </Button>

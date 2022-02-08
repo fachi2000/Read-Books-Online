@@ -22,6 +22,9 @@ router.get("/tickets/:id", ticketController.findOne);
 // Update a ticket with id
 router.put("/tickets/:id", ticketController.update);
 
+// Validate a ticket with id
+router.put("/tickets/validate/:id", ticketController.validate);
+
 // Delete a ticket with id
 router.delete("/tickets/:id", ticketController.delete);
 

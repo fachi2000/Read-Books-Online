@@ -19,8 +19,6 @@ exports.create = (req, res) => {
 
   const ticket = new Ticket({
     name: req.body.name,
-    validatedBy: "",
-    validationDate: "",
     needsMoreInfo: false,
     userId: req.body.userId,
   });
@@ -50,14 +48,17 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Tickets from the database.
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
   const name = req.query.name;
   const id = req.userId;
-  console.log(id);
+  var user = await User.findById(id);
   //We use req.query.name to get query string from the Request and consider it as condition for findAll() method.
-  var condition = name
-    ? { name: { $regex: new RegExp(name), $options: "i" } }
-    : {};
+  var condition;
+  if (user.role === "client") {
+    condition = { userId: user.email };
+  } else {
+    condition = {};
+  }
   Ticket.find(condition)
     .then((data) => {
       res.send(data);
@@ -95,6 +96,27 @@ exports.update = (req, res) => {
   Ticket.findOneAndUpdate(
     myquery,
     req.body,
+    { upsert: true },
+    function (err, doc) {
+      if (err) return res.send(500, { error: err });
+      return res.send("Succesfully updated ticket.");
+    }
+  );
+};
+
+// Update a Ticket by the id in the request
+exports.validate = (req, res) => {
+  let myquery = { _id: req.params.id };
+
+  Ticket.findOneAndUpdate(
+    myquery,
+    {
+      $set: {
+        validatedBy: req.body.userId,
+        validationDate: new Date(),
+        needsMoreInfo: false,
+      },
+    },
     { upsert: true },
     function (err, doc) {
       if (err) return res.send(500, { error: err });
