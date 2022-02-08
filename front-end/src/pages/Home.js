@@ -3,14 +3,31 @@ import { Modal, Button } from "react-bootstrap";
 import TicketsService from "../services/ticket.service";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
-import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
+import {
+  BsFillTrashFill,
+  BsFillPencilFill,
+  BsCheckCircleFill,
+} from "react-icons/bs";
 
 const Home = () => {
   const [privateTickets, setPrivateTickets] = useState([]);
 
   const [reqShow, setRequestShow] = useState(false);
+  const [validateShow, setValidateShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
+
+  const renderValidationButton = () => {
+    if (user.role === "employee" || user.role === "admin") {
+      return (
+        <div className="mb-1">
+          <Button variant="success" onClick={handleValidateShow}>
+            <BsCheckCircleFill />
+          </Button>
+        </div>
+      );
+    }
+  };
 
   const [ticketId, setTicketId] = useState("");
 
@@ -29,6 +46,13 @@ const Home = () => {
   const handleRequestShow = () => {
     setMsg("");
     setRequestShow(true);
+  };
+
+  const handleValidateClose = () => setValidateShow(false);
+  const handleValidateShow = (e) => {
+    setMsg("");
+    //setTicketId(id);
+    setValidateShow(true);
   };
 
   const handleEditClose = () => setEditShow(false);
@@ -52,7 +76,17 @@ const Home = () => {
   const handleRequest = (e) => {
     e.preventDefault();
     if (bookName !== "") {
-      TicketsService.createTicket(bookName, user.id);
+      TicketsService.createTicket(bookName, user.email);
+      setMsg("Request submitted succesfully");
+    } else {
+      setMsg("Please enter a value");
+    }
+  };
+
+  const handleValidation = (e) => {
+    e.preventDefault();
+    if (bookName !== "") {
+      TicketsService.createTicket(bookName, user.email);
       setMsg("Request submitted succesfully");
     } else {
       setMsg("Please enter a value");
@@ -102,42 +136,63 @@ const Home = () => {
         type="text"
       ></input>
       <br></br>
-      {privateTickets.map(({ _id, name, dateCreated, validated, index }) => (
-        <div key={index}>
-          <div class="d-flex justify-content-between">
-            <div>
-              <h5>{name}</h5>
-              <h6>
-                Requested: {dateCreated.slice(0, 10)} at{" "}
-                {dateCreated.slice(11, 16)}
-              </h6>
-              <h6>
-                Validated:{" "}
-                <span style={{ color: "#2986cc" }}>{validated.toString()}</span>
-              </h6>
-            </div>
-            <div>Created by:</div>
-            <div>
-              <div className="mb-1">
+      {privateTickets.map(
+        ({
+          _id,
+          name,
+          dateCreated,
+          validatedBy,
+          validationDate,
+          needsMoreInfo,
+          userId,
+          index,
+        }) => (
+          <div key={index}>
+            <div class="d-flex justify-content-between">
+              <div>
+                <h4>
+                  <b>
+                    <i>{name}</i>
+                  </b>
+                </h4>
+                <h6>
+                  Requested: {dateCreated.slice(0, 10)} at{" "}
+                  {dateCreated.slice(11, 16)}
+                </h6>
+                <h6>
+                  Validated by:
+                  <span style={{ color: "#2986cc" }}>{validatedBy}</span>
+                </h6>
+                <h6>Validation date: {validationDate}</h6>
+                <h6>Needs more information: {needsMoreInfo.toString()}</h6>
+              </div>
+              <div>
+                <b>Created by:</b> {userId}
+              </div>
+              <div>
+                {renderValidationButton()}
+
+                <div className="mb-1">
+                  <Button
+                    variant="primary"
+                    onClick={(e) => handleEditShow(e, _id)}
+                  >
+                    <BsFillPencilFill />
+                  </Button>
+                </div>
+
                 <Button
-                  variant="primary"
-                  onClick={(e) => handleEditShow(e, _id)}
+                  variant="danger"
+                  onClick={(e) => handleDeleteShow(e, _id)}
                 >
-                  <BsFillPencilFill />
+                  <BsFillTrashFill />
                 </Button>
               </div>
-
-              <Button
-                variant="danger"
-                onClick={(e) => handleDeleteShow(e, _id)}
-              >
-                <BsFillTrashFill />
-              </Button>
             </div>
+            <hr></hr>
           </div>
-          <hr></hr>
-        </div>
-      ))}
+        )
+      )}
       <Button variant="primary" onClick={handleRequestShow}>
         Request new book
       </Button>
@@ -164,6 +219,27 @@ const Home = () => {
             onClick={(e) => handleEdit(e, ticketId, newBookName)}
           >
             Update
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={validateShow} onHide={handleValidateClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Validate request</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to validate this request?
+          {msgDiv}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleValidateClose}>
+            +Info
+          </Button>
+          <Button
+            variant="success"
+            onClick={(e) => handleEdit(e, ticketId, newBookName)}
+          >
+            Validate
           </Button>
         </Modal.Footer>
       </Modal>

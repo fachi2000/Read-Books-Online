@@ -19,8 +19,10 @@ exports.create = (req, res) => {
 
   const ticket = new Ticket({
     name: req.body.name,
-    validated: false,
-    needsMoreInfo: true,
+    validatedBy: "",
+    validationDate: "",
+    needsMoreInfo: false,
+    userId: req.body.userId,
   });
 
   ticket
