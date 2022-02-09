@@ -8,6 +8,7 @@ import {
   BsFillPencilFill,
   BsCheckCircleFill,
   BsSearch,
+  BsCurrencyPound,
 } from "react-icons/bs";
 
 const Home = () => {
@@ -15,20 +16,9 @@ const Home = () => {
 
   const [reqShow, setRequestShow] = useState(false);
   const [validateShow, setValidateShow] = useState(false);
+  const [priceShow, setPriceShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
-
-  const renderValidationButton = (_id) => {
-    if (user.role === "employee" || user.role === "admin") {
-      return (
-        <div className="mb-1">
-          <Button variant="success" onClick={(e) => handleValidateShow(e, _id)}>
-            <BsCheckCircleFill />
-          </Button>
-        </div>
-      );
-    }
-  };
 
   const [ticketId, setTicketId] = useState("");
 
@@ -44,6 +34,7 @@ const Home = () => {
   );
   const [bookName, setBookName] = useState("");
   const [newBookName, setNewBookName] = useState("");
+  const [price, setPrice] = useState("");
 
   const handleRequestClose = () => setRequestShow(false);
   const handleRequestShow = () => {
@@ -56,6 +47,13 @@ const Home = () => {
     setMsg("");
     setTicketId(id);
     setValidateShow(true);
+  };
+
+  const handlePriceClose = () => setPriceShow(false);
+  const handlePriceShow = (e, id) => {
+    setMsg("");
+    setTicketId(id);
+    setPriceShow(true);
   };
 
   const handleEditClose = () => setEditShow(false);
@@ -82,6 +80,19 @@ const Home = () => {
       TicketsService.createTicket(bookName, user.email);
       setMsgColor("text-success");
       setMsg("Request submitted succesfully");
+    } else {
+      setMsgColor("text-danger");
+      setMsg("Please enter a value");
+    }
+  };
+
+  const handleSetPrice = (e, price) => {
+    e.preventDefault();
+    console.log("PRICE" + price);
+    if (price !== "") {
+      TicketsService.setTicketPrice(ticketId, price);
+      setMsgColor("text-success");
+      setMsg("Price has been set");
     } else {
       setMsgColor("text-danger");
       setMsg("Please enter a value");
@@ -163,6 +174,7 @@ const Home = () => {
           validationDate,
           needsMoreInfo,
           userId,
+          price,
           index,
         }) => (
           <div key={index}>
@@ -192,12 +204,39 @@ const Home = () => {
                 {needsMoreInfo && (
                   <h6>Needs more information: {needsMoreInfo.toString()}</h6>
                 )}
+                {price && (
+                  <h6>
+                    Price:{" "}
+                    <span style={{ color: "#2986cc" }}> {price}&#163;</span>
+                  </h6>
+                )}
               </div>
               <div>
                 <b>Created by:</b> {userId}
               </div>
               <div>
-                {renderValidationButton(_id)}
+                {user &&
+                  !validatedBy &&
+                  (user.role === "employee" || user.role === "admin") && (
+                    <div className="mb-1">
+                      <Button
+                        variant="success"
+                        onClick={(e) => handleValidateShow(e, _id)}
+                      >
+                        <BsCheckCircleFill />
+                      </Button>
+                    </div>
+                  )}
+                {user && validatedBy && !price && user.role === "employee" && (
+                  <div className="mb-1">
+                    <Button
+                      variant="warning"
+                      onClick={(e) => handlePriceShow(e, _id)}
+                    >
+                      <BsCurrencyPound />
+                    </Button>
+                  </div>
+                )}
 
                 <div className="mb-1">
                   <Button
@@ -225,12 +264,11 @@ const Home = () => {
           </div>
         )
       )}
-      {user && user.role === "client" && (
+      {user && (user.role === "client" || user.role === "employee") && (
         <Button variant="primary" onClick={handleRequestShow}>
           Request new book
         </Button>
       )}
-
       <Modal show={editShow} onHide={handleEditClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit request</Modal.Title>
@@ -257,7 +295,6 @@ const Home = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
       <Modal show={validateShow} onHide={handleValidateClose}>
         <Modal.Header closeButton>
           <Modal.Title>Validate request</Modal.Title>
@@ -275,6 +312,30 @@ const Home = () => {
           </Button>
           <Button variant="success" onClick={(e) => handleValidation(e)}>
             Validate
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={priceShow} onHide={handlePriceClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Set price</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Please set the price:
+          <input
+            type="number"
+            value={price}
+            className="form-control form-group"
+            onChange={(e) => setPrice(e.target.value)}
+          ></input>
+          {msgDiv}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handlePriceClose}>
+            Cancel
+          </Button>
+          <Button variant="success" onClick={(e) => handleSetPrice(e, price)}>
+            Set
           </Button>
         </Modal.Footer>
       </Modal>
@@ -302,7 +363,6 @@ const Home = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
       <Modal show={deleteShow} onHide={handleDeleteClose}>
         <Modal.Header closeButton>
           <Modal.Title>Delete request</Modal.Title>

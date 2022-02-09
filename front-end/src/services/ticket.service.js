@@ -31,6 +31,11 @@ const returnTicket = (ticketId) => {
   return axios.put(API_URL + "/tickets/return/" + ticketId);
 };
 
+//used to put moreInfo as true
+const setTicketPrice = (ticketId, price) => {
+  return axios.put(API_URL + "/tickets/setPrice/" + ticketId, { price });
+};
+
 const ticketService = {
   getTickets,
   createTicket,
@@ -38,6 +43,7 @@ const ticketService = {
   updateTicket,
   validateTicket,
   returnTicket,
+  setTicketPrice,
 };
 
 export default ticketService;

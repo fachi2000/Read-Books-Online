@@ -2,6 +2,7 @@ const db = require("../models");
 
 const Ticket = db.tickets;
 const User = db.users;
+var nodemailer = require("nodemailer");
 
 //Welcome page
 exports.start = (response) => {
@@ -126,6 +127,25 @@ exports.validate = (req, res) => {
 };
 
 // Update a Ticket by the id in the request
+exports.setTicketPrice = (req, res) => {
+  let myquery = { _id: req.params.id };
+
+  Ticket.findOneAndUpdate(
+    myquery,
+    {
+      $set: {
+        price: req.body.price,
+      },
+    },
+    { upsert: true },
+    function (err, doc) {
+      if (err) return res.send(500, { error: err });
+      return res.send("Succesfully updated ticket.");
+    }
+  );
+};
+
+// Update a Ticket by the id in the request
 exports.return = (req, res) => {
   let myquery = { _id: req.params.id };
 
@@ -165,6 +185,31 @@ exports.delete = (req, res) => {
         message: "Could not delete Ticket with id=" + id,
       });
     });
+};
+
+exports.sendMail = (req, res) => {
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "b8024030@my.shu.ac.uk",
+      pass: "dummy",
+    },
+  });
+
+  var mailOptions = {
+    from: "b8024030@my.shu.ac.uk",
+    to: req.body.userId,
+    subject: "Read Books Online",
+    text: "You purchased a book!",
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 };
 
 // Delete all Ticket from the database.
