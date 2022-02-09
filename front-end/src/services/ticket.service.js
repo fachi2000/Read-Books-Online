@@ -26,7 +26,7 @@ const updateTicket = (ticketId, name) => {
 const validateTicket = (ticketId, userId) => {
   return axios.put(API_URL + "/tickets/validate/" + ticketId, { userId });
 };
-
+//used to put moreInfo as true
 const returnTicket = (ticketId) => {
   return axios.put(API_URL + "/tickets/return/" + ticketId);
 };

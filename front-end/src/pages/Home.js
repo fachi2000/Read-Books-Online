@@ -33,9 +33,11 @@ const Home = () => {
   const [ticketId, setTicketId] = useState("");
 
   const [msg, setMsg] = useState(null);
+  const [msgColor, setMsgColor] = useState("");
+
   const msgDiv = msg ? (
-    <div className="error">
-      <p class="text-info">{msg}</p>
+    <div class={msgColor}>
+      <p class={msgColor}>{msg}</p>
     </div>
   ) : (
     ""
@@ -78,8 +80,10 @@ const Home = () => {
     e.preventDefault();
     if (bookName !== "") {
       TicketsService.createTicket(bookName, user.email);
+      setMsgColor("text-success");
       setMsg("Request submitted succesfully");
     } else {
+      setMsgColor("text-danger");
       setMsg("Please enter a value");
     }
   };
@@ -88,18 +92,21 @@ const Home = () => {
     e.preventDefault();
 
     TicketsService.validateTicket(ticketId, user.email);
+    setMsgColor("text-success");
     setMsg("Ticket has been validated");
   };
 
   const handleMoreInformation = (e, ticketID) => {
     e.preventDefault();
     TicketsService.returnTicket(ticketID);
+    setMsgColor("text-success");
     setMsg("Ticket has been sent to the client");
   };
 
   const handleDelete = (e, _id) => {
     e.preventDefault();
     TicketsService.deleteTicket(_id);
+    setMsgColor("text-success");
     setMsg("Deleted succesfully");
   };
 
@@ -107,8 +114,10 @@ const Home = () => {
     e.preventDefault();
     if (newBookName !== "") {
       TicketsService.updateTicket(ticketId, newName);
+      setMsgColor("text-success");
       setMsg("Updated succesfully");
     } else {
+      setMsgColor("text-danger");
       setMsg("Please enter a value");
     }
   };
