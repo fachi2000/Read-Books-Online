@@ -92,11 +92,16 @@ exports.findOne = (req, res) => {
 
 // Update a Ticket by the id in the request
 exports.update = (req, res) => {
-  //let myquery = { _id: req.body.id };
   let myquery = { _id: req.params.id };
+
   Ticket.findOneAndUpdate(
     myquery,
-    req.body,
+    {
+      $set: {
+        name: req.body.name,
+        needsMoreInfo: false,
+      },
+    },
     { upsert: true },
     function (err, doc) {
       if (err) return res.send(500, { error: err });

@@ -89,13 +89,13 @@ const Home = () => {
   const handleSetPrice = (e, price) => {
     e.preventDefault();
     console.log("PRICE" + price);
-    if (price !== "") {
+    if (price !== "" && price > 0) {
       TicketsService.setTicketPrice(ticketId, price);
       setMsgColor("text-success");
       setMsg("Price has been set");
     } else {
       setMsgColor("text-danger");
-      setMsg("Please enter a value");
+      setMsg("Please enter a value or a greater value than 0");
     }
   };
 
@@ -217,6 +217,7 @@ const Home = () => {
               <div>
                 {user &&
                   !validatedBy &&
+                  !needsMoreInfo &&
                   (user.role === "employee" || user.role === "admin") && (
                     <div className="mb-1">
                       <Button
