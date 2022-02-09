@@ -91,6 +91,12 @@ const Home = () => {
     setMsg("Ticket has been validated");
   };
 
+  const handleMoreInformation = (e, ticketID) => {
+    e.preventDefault();
+    TicketsService.returnTicket(ticketID);
+    setMsg("Ticket has been sent to the client");
+  };
+
   const handleDelete = (e, _id) => {
     e.preventDefault();
     TicketsService.deleteTicket(_id);
@@ -174,7 +180,9 @@ const Home = () => {
                     {validationDate && validationDate.slice(11, 16)}
                   </h6>
                 )}
-                <h6>Needs more information: {needsMoreInfo.toString()}</h6>
+                {needsMoreInfo && (
+                  <h6>Needs more information: {needsMoreInfo.toString()}</h6>
+                )}
               </div>
               <div>
                 <b>Created by:</b> {userId}
@@ -250,13 +258,13 @@ const Home = () => {
           {msgDiv}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleValidateClose}>
+          <Button
+            variant="secondary"
+            onClick={(e) => handleMoreInformation(e, ticketId)}
+          >
             +Info
           </Button>
-          <Button
-            variant="success"
-            onClick={(e) => handleValidation(e, ticketId, user.email)}
-          >
+          <Button variant="success" onClick={(e) => handleValidation(e)}>
             Validate
           </Button>
         </Modal.Footer>

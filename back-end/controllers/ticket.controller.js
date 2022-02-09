@@ -125,6 +125,25 @@ exports.validate = (req, res) => {
   );
 };
 
+// Update a Ticket by the id in the request
+exports.return = (req, res) => {
+  let myquery = { _id: req.params.id };
+
+  Ticket.findOneAndUpdate(
+    myquery,
+    {
+      $set: {
+        needsMoreInfo: true,
+      },
+    },
+    { upsert: true },
+    function (err, doc) {
+      if (err) return res.send(500, { error: err });
+      return res.send("Succesfully updated ticket.");
+    }
+  );
+};
+
 // Delete a Ticket with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;

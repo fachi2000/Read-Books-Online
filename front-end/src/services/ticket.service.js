@@ -27,12 +27,17 @@ const validateTicket = (ticketId, userId) => {
   return axios.put(API_URL + "/tickets/validate/" + ticketId, { userId });
 };
 
+const returnTicket = (ticketId) => {
+  return axios.put(API_URL + "/tickets/return/" + ticketId);
+};
+
 const ticketService = {
   getTickets,
   createTicket,
   deleteTicket,
   updateTicket,
   validateTicket,
+  returnTicket,
 };
 
 export default ticketService;
