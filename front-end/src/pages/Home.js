@@ -14,6 +14,8 @@ import {
 const Home = () => {
   const [privateTickets, setPrivateTickets] = useState([]);
 
+  const [threshold, setThreshold] = useState();
+
   const [reqShow, setRequestShow] = useState(false);
   const [validateShow, setValidateShow] = useState(false);
   const [priceShow, setPriceShow] = useState(false);
@@ -73,6 +75,13 @@ const Home = () => {
   const navigate = useNavigate();
 
   const user = AuthService.getCurrentUser();
+
+  const generateThreshold = () => {
+    const min = 1;
+    const max = 50;
+    const rand = min + Math.random() * (max - min);
+    setThreshold(rand);
+  };
 
   const handleRequest = (e) => {
     e.preventDefault();

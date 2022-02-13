@@ -15,20 +15,20 @@ router.post("/register", userController.register);
 //login a user
 router.post("/login", userController.login);
 
-// Create a new user if permission
-//router.post("/register", userController.create);
-
 // Retrieve all users
 router.get("/users", [authjwt.verifyToken], userController.findAll);
 
 // Retrieve a single user with id
-router.get("/users/:id", /*authRole("admin"),*/ userController.findOne);
+router.get("/users/:id", userController.findOne);
 
 // Update a user with id
-router.put("/users/:id", /*authRole("admin"),*/ userController.update);
+router.put("/users/:id", userController.update);
 
 // Delete a user with id
-router.delete("/users/:id", /*authRole("admin"),*/ userController.delete);
+router.delete("/users/:id", userController.delete);
+
+// Send user email with id
+router.post("/users/notify", userController.sendMail);
 
 // Delete all users of the database
 router.delete(
