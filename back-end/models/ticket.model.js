@@ -12,6 +12,7 @@ module.exports = (mongoose) => {
         default: Date.now,
       },
       price: Number,
+      purchased: Boolean,
       userId: String,
     })
   );
