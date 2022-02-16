@@ -133,13 +133,20 @@ exports.validate = (req, res) => {
 // Update a Ticket by the id in the request
 exports.setTicketPrice = (req, res) => {
   let myquery = { _id: req.params.id };
+  console.log(req.body.price);
+  console.log(req.body.threshold);
+  console.log("HOLAA!!!");
+  var condition;
+  if (req.body.price < req.body.threshold) {
+    condition = { price: req.body.price, purchased: true };
+  } else {
+    condition = { price: req.body.price, purchased: false };
+  }
 
   Ticket.findOneAndUpdate(
     myquery,
     {
-      $set: {
-        price: req.body.price,
-      },
+      $set: condition,
     },
     { upsert: true },
     function (err, doc) {

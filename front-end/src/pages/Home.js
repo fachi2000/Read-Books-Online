@@ -108,7 +108,7 @@ const Home = () => {
     e.preventDefault();
     console.log("PRICE" + price);
     if (price !== "" && price > 0) {
-      TicketsService.setTicketPrice(ticketId, price);
+      TicketsService.setTicketPrice(ticketId, price, threshold);
       setMsgColor("text-success");
       setMsg("Price has been set");
     } else {
@@ -266,7 +266,7 @@ const Home = () => {
                 {user && validatedBy && !price && user.role === "employee" && (
                   <div className="mb-1">
                     <Button
-                      variant="info"
+                      variant="warning"
                       onClick={(e) => handlePriceShow(e, _id)}
                     >
                       <BsCurrencyPound />
