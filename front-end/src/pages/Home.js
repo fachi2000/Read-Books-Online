@@ -9,18 +9,20 @@ import {
   BsCheckCircleFill,
   BsSearch,
   BsCurrencyPound,
+  BsFillFlagFill,
 } from "react-icons/bs";
 
 const Home = () => {
   const [privateTickets, setPrivateTickets] = useState([]);
 
-  const [threshold, setThreshold] = useState();
+  const [threshold, setThreshold] = useState(0);
 
   const [reqShow, setRequestShow] = useState(false);
   const [validateShow, setValidateShow] = useState(false);
   const [priceShow, setPriceShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
+  const [approveShow, setApproveShow] = useState(false);
 
   const [ticketId, setTicketId] = useState("");
 
@@ -44,6 +46,12 @@ const Home = () => {
     setRequestShow(true);
   };
 
+  const handleApproveClose = () => setApproveShow(false);
+  const handleApproveShow = () => {
+    setMsg("");
+    setApproveShow(true);
+  };
+
   const handleValidateClose = () => setValidateShow(false);
   const handleValidateShow = (e, id) => {
     setMsg("");
@@ -63,6 +71,7 @@ const Home = () => {
     setMsg("");
     setTicketId(id);
     setEditShow(true);
+    console.log(threshold);
   };
 
   const handleDeleteClose = () => setDeleteShow(false);
@@ -79,7 +88,7 @@ const Home = () => {
   const generateThreshold = () => {
     const min = 1;
     const max = 50;
-    const rand = min + Math.random() * (max - min);
+    const rand = Math.floor(min + Math.random() * (max - min));
     setThreshold(rand);
   };
 
@@ -143,6 +152,8 @@ const Home = () => {
   };
 
   useEffect(() => {
+    generateThreshold();
+
     TicketsService.getTickets(user).then(
       (response) => {
         setPrivateTickets(response.data);
@@ -184,6 +195,7 @@ const Home = () => {
           needsMoreInfo,
           userId,
           price,
+          purchased,
           index,
         }) => (
           <div key={index}>
@@ -225,22 +237,36 @@ const Home = () => {
               </div>
               <div>
                 {user &&
+                  !purchased &&
+                  price &&
+                  (user.role === "employee" || user.role === "admin") && (
+                    <div className="mb-1">
+                      <Button
+                        variant="success"
+                        onClick={(e) => handleApproveShow(e, _id)}
+                      >
+                        <BsCheckCircleFill />
+                      </Button>
+                    </div>
+                  )}
+                {user &&
                   !validatedBy &&
                   !needsMoreInfo &&
                   (user.role === "employee" || user.role === "admin") && (
                     <div className="mb-1">
                       <Button
-                        variant="success"
+                        style={{ color: "white" }}
+                        variant="info"
                         onClick={(e) => handleValidateShow(e, _id)}
                       >
-                        <BsCheckCircleFill />
+                        <BsFillFlagFill />
                       </Button>
                     </div>
                   )}
                 {user && validatedBy && !price && user.role === "employee" && (
                   <div className="mb-1">
                     <Button
-                      variant="warning"
+                      variant="info"
                       onClick={(e) => handlePriceShow(e, _id)}
                     >
                       <BsCurrencyPound />
@@ -320,7 +346,7 @@ const Home = () => {
           >
             +Info
           </Button>
-          <Button variant="success" onClick={(e) => handleValidation(e)}>
+          <Button variant="info" onClick={(e) => handleValidation(e)}>
             Validate
           </Button>
         </Modal.Footer>
@@ -347,6 +373,22 @@ const Home = () => {
           <Button variant="success" onClick={(e) => handleSetPrice(e, price)}>
             Set
           </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={approveShow} onHide={handleApproveClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Approve Request</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Do you want to approve the request?
+          {msgDiv}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleApproveClose}>
+            Deny
+          </Button>
+          <Button variant="success">Approve</Button>
         </Modal.Footer>
       </Modal>
 
