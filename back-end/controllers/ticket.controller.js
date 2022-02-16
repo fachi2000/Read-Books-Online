@@ -131,6 +131,25 @@ exports.validate = (req, res) => {
 };
 
 // Update a Ticket by the id in the request
+exports.approveTicket = (req, res) => {
+  let myquery = { _id: req.params.id };
+  console.log("HOLA!!");
+  Ticket.findOneAndUpdate(
+    myquery,
+    {
+      $set: {
+        purchased: true,
+      },
+    },
+    { upsert: true },
+    function (err, doc) {
+      if (err) return res.send(500, { error: err });
+      return res.send("Succesfully updated ticket.");
+    }
+  );
+};
+
+// Update a Ticket by the id in the request
 exports.setTicketPrice = (req, res) => {
   let myquery = { _id: req.params.id };
   console.log(req.body.price);

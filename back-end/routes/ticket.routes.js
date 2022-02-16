@@ -31,6 +31,9 @@ router.put("/tickets/return/:id", ticketController.return);
 //return ticket to client to add more information
 router.put("/tickets/setPrice/:id", ticketController.setTicketPrice);
 
+//approve ticket or not
+router.put("/tickets/approve/:id", ticketController.approveTicket);
+
 // Delete a ticket with id
 router.delete("/tickets/:id", ticketController.delete);
 

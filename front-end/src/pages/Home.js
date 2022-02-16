@@ -47,8 +47,9 @@ const Home = () => {
   };
 
   const handleApproveClose = () => setApproveShow(false);
-  const handleApproveShow = () => {
+  const handleApproveShow = (e, id) => {
     setMsg("");
+    setTicketId(id);
     setApproveShow(true);
   };
 
@@ -132,6 +133,13 @@ const Home = () => {
     setMsg("Ticket has been sent to the client");
   };
 
+  const handleApprove = (e, ticketID) => {
+    e.preventDefault();
+    TicketsService.approveTicket(ticketID);
+    setMsgColor("text-success");
+    setMsg("Ticket has been approved");
+  };
+
   const handleDelete = (e, _id) => {
     e.preventDefault();
     TicketsService.deleteTicket(_id);
@@ -198,7 +206,12 @@ const Home = () => {
           purchased,
           index,
         }) => (
-          <div key={index}>
+          <div
+            key={index}
+            style={{
+              backgroundColor: purchased === true ? "#e0f4f4" : "white",
+            }}
+          >
             <div class="d-flex justify-content-between">
               <div>
                 <h4>
@@ -236,19 +249,16 @@ const Home = () => {
                 <b>Created by:</b> {userId}
               </div>
               <div>
-                {user &&
-                  !purchased &&
-                  price &&
-                  (user.role === "employee" || user.role === "admin") && (
-                    <div className="mb-1">
-                      <Button
-                        variant="success"
-                        onClick={(e) => handleApproveShow(e, _id)}
-                      >
-                        <BsCheckCircleFill />
-                      </Button>
-                    </div>
-                  )}
+                {user && !purchased && price && user.role === "admin" && (
+                  <div className="mb-1">
+                    <Button
+                      variant="success"
+                      onClick={(e) => handleApproveShow(e, _id)}
+                    >
+                      <BsCheckCircleFill />
+                    </Button>
+                  </div>
+                )}
                 {user &&
                   !validatedBy &&
                   !needsMoreInfo &&
@@ -385,10 +395,12 @@ const Home = () => {
           {msgDiv}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleApproveClose}>
+          <Button variant="danger" onClick={handleApproveClose}>
             Deny
           </Button>
-          <Button variant="success">Approve</Button>
+          <Button variant="success" onClick={(e) => handleApprove(e, ticketId)}>
+            Approve
+          </Button>
         </Modal.Footer>
       </Modal>
 

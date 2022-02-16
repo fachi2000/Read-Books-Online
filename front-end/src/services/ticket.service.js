@@ -39,6 +39,11 @@ const setTicketPrice = (ticketId, price, threshold) => {
   });
 };
 
+//used to put moreInfo as true
+const approveTicket = (ticketId) => {
+  return axios.put(API_URL + "/tickets/approve/" + ticketId);
+};
+
 const ticketService = {
   getTickets,
   createTicket,
@@ -47,6 +52,7 @@ const ticketService = {
   validateTicket,
   returnTicket,
   setTicketPrice,
+  approveTicket,
 };
 
 export default ticketService;
