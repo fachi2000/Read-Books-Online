@@ -19,4 +19,4 @@
 
 *WARNING*
 
-Some networks will block the server from running, if this is an issue, try sharing your mobile data.
+Some networks will block the server from running, if this is an issue, try sharing your mobile data or another network.
