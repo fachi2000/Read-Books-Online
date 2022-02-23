@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import TicketsService from "../services/ticket.service";
+import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import {
@@ -138,6 +139,13 @@ const Home = () => {
     TicketsService.approveTicket(ticketID);
     setMsgColor("text-success");
     setMsg("Ticket has been approved");
+  };
+
+  const handleDeny = (e, ticketID) => {
+    e.preventDefault();
+    TicketsService.denyTicket(ticketID);
+    setMsgColor("text-danger");
+    setMsg("Ticket has been denied");
   };
 
   const handleDelete = (e, _id) => {
@@ -284,14 +292,17 @@ const Home = () => {
                   </div>
                 )}
 
-                <div className="mb-1">
-                  <Button
-                    variant="primary"
-                    onClick={(e) => handleEditShow(e, _id)}
-                  >
-                    <BsFillPencilFill />
-                  </Button>
-                </div>
+                {user && !purchased && !price && (
+                  <div className="mb-1">
+                    <Button
+                      variant="primary"
+                      onClick={(e) => handleEditShow(e, _id)}
+                    >
+                      <BsFillPencilFill />
+                    </Button>
+                  </div>
+                )}
+
                 {!validationDate ||
                 user.role == "admin" ||
                 user.role == "employee" ? (
@@ -395,7 +406,7 @@ const Home = () => {
           {msgDiv}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={handleApproveClose}>
+          <Button variant="danger" onClick={(e) => handleDeny(e, ticketId)}>
             Deny
           </Button>
           <Button variant="success" onClick={(e) => handleApprove(e, ticketId)}>

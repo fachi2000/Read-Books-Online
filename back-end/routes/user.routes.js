@@ -27,9 +27,6 @@ router.put("/users/:id", userController.update);
 // Delete a user with id
 router.delete("/users/:id", userController.delete);
 
-// Send user email with id
-router.post("/users/notify", userController.sendMail);
-
 // Delete all users of the database
 router.delete(
   "/users",

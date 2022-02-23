@@ -44,6 +44,11 @@ const approveTicket = (ticketId) => {
   return axios.put(API_URL + "/tickets/approve/" + ticketId);
 };
 
+//used to deny a ticket
+const denyTicket = (ticketId) => {
+  return axios.put(API_URL + "/tickets/deny/" + ticketId);
+};
+
 const ticketService = {
   getTickets,
   createTicket,
@@ -53,6 +58,7 @@ const ticketService = {
   returnTicket,
   setTicketPrice,
   approveTicket,
+  denyTicket,
 };
 
 export default ticketService;

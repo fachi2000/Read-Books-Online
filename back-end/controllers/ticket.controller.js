@@ -2,6 +2,7 @@ const db = require("../models");
 
 const Ticket = db.tickets;
 const User = db.users;
+var nodemailer = require("nodemailer");
 
 //Welcome page
 exports.start = (response) => {
@@ -150,12 +151,11 @@ exports.approveTicket = (req, res) => {
 };
 
 // Update a Ticket by the id in the request
-exports.setTicketPrice = (req, res) => {
+exports.setTicketPrice = async (req, res) => {
   let myquery = { _id: req.params.id };
-  console.log(req.body.price);
-  console.log(req.body.threshold);
-  console.log("HOLAA!!!");
+
   var condition;
+
   if (req.body.price < req.body.threshold) {
     condition = { price: req.body.price, purchased: true };
   } else {
@@ -173,6 +173,54 @@ exports.setTicketPrice = (req, res) => {
       return res.send("Succesfully updated ticket.");
     }
   );
+
+  var ticket = await Ticket.findById(req.params.id);
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com", // hostname
+    secureConnection: false, // TLS requires secureConnection to be false
+    port: 587, // port for secure SMTP
+    tls: {
+      ciphers: "SSLv3",
+    },
+    auth: {
+      user: "fachiAafNode41@outlook.com",
+      pass: "123123PP123",
+    },
+  });
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+
+  if (req.body.price < req.body.threshold) {
+    var mailOptions = {
+      from: '"Reed Books Online" <fachiAafNode41@outlook.com>',
+      to: "fachi252@gmail.com",
+      subject: "Thank you for your purchase!",
+      text:
+        "Hi! Thank you for your purhase at RBO! THe details are below\n\n " +
+        "Book name: " +
+        ticket.name +
+        "\n" +
+        "Price:" +
+        req.body.price +
+        "\n\n" +
+        "You can contact RBO any time. We hope to see you soon!",
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+  }
 };
 
 // Update a Ticket by the id in the request
@@ -194,10 +242,28 @@ exports.return = (req, res) => {
   );
 };
 
+// Update a Ticket by the id in the request
+exports.denyTicket = (req, res) => {
+  let myquery = { _id: req.params.id };
+
+  Ticket.findOneAndUpdate(
+    myquery,
+    {
+      $set: {
+        needsMoreInfo: true,
+      },
+    },
+    { upsert: true },
+    function (err, doc) {
+      if (err) return res.send(500, { error: err });
+      return res.send("Succesfully updated ticket.");
+    }
+  );
+};
+
 // Delete a Ticket with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-
   Ticket.findByIdAndRemove(id)
     .then((data) => {
       if (!data) {

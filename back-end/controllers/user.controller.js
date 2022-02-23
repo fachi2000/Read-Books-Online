@@ -4,7 +4,6 @@ var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 const User = db.users;
 
-var nodemailer = require("nodemailer");
 // Create and Save a new User
 
 exports.register = async (req, res) => {
@@ -144,41 +143,4 @@ exports.delete = (req, res) => {
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
   User.remove({});
-};
-
-exports.sendMail = (req, res) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com", // hostname
-    secureConnection: false, // TLS requires secureConnection to be false
-    port: 587, // port for secure SMTP
-    tls: {
-      ciphers: "SSLv3",
-    },
-    auth: {
-      user: "fachiAafNode41@outlook.com",
-      pass: "123123PP123",
-    },
-  });
-
-  var mailOptions = {
-    from: '"Reed Books Online" <fachiAafNode41@outlook.com>',
-    to: "fachi252@gmail.com",
-    subject: "Thank you for your purchase!",
-    text:
-      "Hi! Thank you for your purhase at RBO, here are the details:\n\n " +
-      "Book name: " +
-      req.body.ticketName +
-      "\n Price: " +
-      req.body.ticketPrice +
-      "\n\n" +
-      "We hope to see you soon!",
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
 };

@@ -25,20 +25,11 @@ const updateUser = (userId, role) => {
   return axios.put(API_URL + "/users/" + userId, { role });
 };
 
-const notifyUser = (userId, ticketName, ticketPrice) => {
-  return axios.post(API_URL + "/users/notify", {
-    userId,
-    ticketName,
-    ticketPrice,
-  });
-};
-
 const userService = {
   getUsers,
   createUser,
   deleteUser,
   updateUser,
-  notifyUser,
 };
 
 export default userService;
