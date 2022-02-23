@@ -203,12 +203,13 @@ exports.setTicketPrice = async (req, res) => {
       to: "fachi252@gmail.com",
       subject: "Thank you for your purchase!",
       text:
-        "Hi! Thank you for your purhase at RBO! THe details are below\n\n " +
+        "Hi! Thank you for your purchase at RBO! THe details are below:\n\n" +
         "Book name: " +
         ticket.name +
         "\n" +
         "Price:" +
         req.body.price +
+        "£" +
         "\n\n" +
         "You can contact RBO any time. We hope to see you soon!",
     };
