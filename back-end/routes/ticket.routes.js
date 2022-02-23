@@ -35,7 +35,7 @@ router.put("/tickets/setPrice/:id", ticketController.setTicketPrice);
 router.put("/tickets/approve/:id", ticketController.approveTicket);
 
 //approve ticket or not
-router.put("/tickets/approve/:id", ticketController.denyTicket);
+router.put("/tickets/deny/:id", ticketController.denyTicket);
 
 // Delete a ticket with id
 router.delete("/tickets/:id", ticketController.delete);

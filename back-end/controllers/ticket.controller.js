@@ -252,6 +252,9 @@ exports.denyTicket = (req, res) => {
     {
       $set: {
         needsMoreInfo: true,
+        validatedBy: null,
+        validationDate: null,
+        price: null,
       },
     },
     { upsert: true },
