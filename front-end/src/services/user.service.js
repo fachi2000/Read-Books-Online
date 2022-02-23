@@ -7,10 +7,8 @@ const getUsers = (/*userId*/) => {
   return axios.get(API_URL + "/users", { /*userId,*/ headers: authHeader() });
 };
 // eslint-disable-next-line
-const findUser = (name) => {
-  return axios.get(API_URL + "/users", {
-    /*name,*/ headers: authHeader(),
-  });
+const findUsers = (searchUser) => {
+  return axios.post(API_URL + "/users/find", { searchUser });
 };
 
 const createUser = (email, password) => {
@@ -30,6 +28,7 @@ const userService = {
   createUser,
   deleteUser,
   updateUser,
+  findUsers,
 };
 
 export default userService;

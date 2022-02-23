@@ -86,16 +86,25 @@ exports.findAll = (req, res) => {
 
 // Find a single USer with an id
 exports.findOne = (req, res) => {
-  let myquery = { _id: req.params.id };
+  var searchUser = req.body.searchUser;
 
-  User.findById(myquery)
+  //We use req.query.name to get query string from the Request and consider it as condition for findAll() method.
+  var condition;
+
+  if (searchUser !== undefined) {
+    condition = { email: new RegExp(searchUser, "i") };
+  } else {
+    condition = { email: { $regex: /NOTFOUND/ } };
+  }
+
+  User.find(condition)
     .then((data) => {
-      if (!data)
-        res.status(404).send({ message: "Not found User with id: " + id });
-      else res.send(data);
+      res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({ message: "Error retriving User with id: " + id });
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving tickets.",
+      });
     });
 };
 

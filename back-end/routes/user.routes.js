@@ -19,7 +19,7 @@ router.post("/login", userController.login);
 router.get("/users", [authjwt.verifyToken], userController.findAll);
 
 // Retrieve a single user with id
-router.get("/users/:id", userController.findOne);
+router.post("/users/find", userController.findOne);
 
 // Update a user with id
 router.put("/users/:id", userController.update);

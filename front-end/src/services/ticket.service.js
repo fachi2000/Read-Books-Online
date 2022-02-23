@@ -10,8 +10,6 @@ const getTickets = () => {
 };
 
 const findTickets = (userId, searchTicket) => {
-  console.log("HIYA" + userId);
-  console.log("HIYA" + searchTicket);
   return axios.post(API_URL + "/tickets/find", { userId, searchTicket });
 };
 

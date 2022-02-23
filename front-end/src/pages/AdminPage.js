@@ -12,6 +12,8 @@ const Home = () => {
   const [editShow, setEditShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
 
+  const [searchUser, setSearchUser] = useState("");
+
   const [userId, setUserId] = useState("");
 
   const [msg, setMsg] = useState(null);
@@ -87,8 +89,20 @@ const Home = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    UserService.findUsers(searchUser).then(
+      (response) => {
+        setPrivateUsers(response.data);
+      },
+      (error) => {
+        console.log("Could not retrieve specified user", error.response);
+      }
+    );
+  };
+
   useEffect(() => {
-    UserService.getUsers(/*user.id*/).then(
+    UserService.getUsers().then(
       (response) => {
         setPrivateUsers(response.data);
       },
@@ -114,8 +128,9 @@ const Home = () => {
           class="form-control"
           placeholder="Search user..."
           type="text"
+          onChange={(e) => setSearchUser(e.target.value)}
         ></input>
-        <Button variant="light">
+        <Button variant="light" onClick={(e) => handleSearch(e, searchUser)}>
           <BsSearch />
         </Button>
       </div>
