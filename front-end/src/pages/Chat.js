@@ -25,7 +25,7 @@ const Chat = () => {
             width="30"
             height="30"
           />
-          <div class="chat ml-2 p-3">Welcome to RBO</div>
+          <div class="chat ml-2 p-3">Welcome to Read Books Online</div>
         </div>
         <div class="d-flex flex-row p-3">
           <div class="bg-white mr-2 p-3">

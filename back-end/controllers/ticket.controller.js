@@ -50,9 +50,9 @@ exports.create = (req, res) => {
 
 // Retrieve all Tickets from the database.
 exports.findAll = async (req, res) => {
-  const name = req.query.name;
   const id = req.userId;
   var user = await User.findById(id);
+
   //We use req.query.name to get query string from the Request and consider it as condition for findAll() method.
   var condition;
   if (user.role === "client") {
@@ -72,21 +72,33 @@ exports.findAll = async (req, res) => {
 };
 
 // Find a single Ticket with an id
-exports.findOne = (req, res) => {
-  let myquery = { _id: req.params.id };
+exports.findOne = async (req, res) => {
+  const id = req.body.userId;
+  var user = await User.findById(id);
 
-  Ticket.findById(myquery)
+  console.log(id);
+
+  var searchTicket = req.body.searchTicket;
+
+  //We use req.query.name to get query string from the Request and consider it as condition for findAll() method.
+  var condition;
+
+  if (user.role === "client" && searchTicket !== undefined) {
+    condition = { userId: user.email, name: new RegExp(searchTicket, "i") };
+  } else if (user.role !== "client" && searchTicket !== undefined) {
+    condition = { name: new RegExp(searchTicket, "i") };
+  } else {
+    condition = { name: { $regex: /NOTFOUND/ } };
+  }
+
+  Ticket.find(condition)
     .then((data) => {
-      if (!data)
-        res
-          .status(404)
-          .send({ message: "Not found Ticket with id: " + myquery });
-      else res.send(data);
+      res.send(data);
     })
     .catch((err) => {
-      res
-        .status(500)
-        .send({ message: "Error retriving Ticket with id: " + myquery });
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving tickets.",
+      });
     });
 };
 
@@ -134,7 +146,6 @@ exports.validate = (req, res) => {
 // Update a Ticket by the id in the request
 exports.approveTicket = (req, res) => {
   let myquery = { _id: req.params.id };
-  console.log("HOLA!!");
   Ticket.findOneAndUpdate(
     myquery,
     {

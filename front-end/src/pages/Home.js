@@ -27,6 +27,8 @@ const Home = () => {
 
   const [ticketId, setTicketId] = useState("");
 
+  const [searchTicket, setSearchTicket] = useState("");
+
   const [msg, setMsg] = useState(null);
   const [msgColor, setMsgColor] = useState("");
 
@@ -167,12 +169,24 @@ const Home = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    TicketsService.findTickets(user.id, searchTicket).then(
+      (response) => {
+        setPrivateTickets(response.data);
+      },
+      (error) => {
+        console.log("Could not retrieve specified ticket", error.response);
+      }
+    );
+  };
+
   useEffect(() => {
     generateThreshold();
 
     TicketsService.getTickets(user).then(
-      (response) => {
-        setPrivateTickets(response.data);
+      (res) => {
+        setPrivateTickets(res.data);
       },
       (error) => {
         console.log("Private page", error.response);
@@ -195,8 +209,9 @@ const Home = () => {
           class="form-control"
           placeholder="Search request..."
           type="text"
+          onChange={(e) => setSearchTicket(e.target.value)}
         ></input>
-        <Button variant="light">
+        <Button variant="light" onClick={(e) => handleSearch(e, searchTicket)}>
           <BsSearch />
         </Button>
       </div>

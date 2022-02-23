@@ -4,11 +4,15 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:3050/ticket";
 
 const getTickets = () => {
-  return axios.get(API_URL + "/tickets", { headers: authHeader() });
+  return axios.get(API_URL + "/tickets", {
+    headers: authHeader(),
+  });
 };
-// eslint-disable-next-line
-const findTickets = (name) => {
-  return axios.get(API_URL + "/tickets", { /*name,*/ headers: authHeader() });
+
+const findTickets = (userId, searchTicket) => {
+  console.log("HIYA" + userId);
+  console.log("HIYA" + searchTicket);
+  return axios.post(API_URL + "/tickets/find", { userId, searchTicket });
 };
 
 const createTicket = (name, userId) => {
@@ -51,6 +55,7 @@ const denyTicket = (ticketId) => {
 
 const ticketService = {
   getTickets,
+  findTickets,
   createTicket,
   deleteTicket,
   updateTicket,

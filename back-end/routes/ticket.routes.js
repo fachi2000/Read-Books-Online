@@ -13,11 +13,11 @@ router.get("/", function (req, res, next) {
 // Create a new ticket
 router.post("/create", ticketController.create);
 
-// Retrieve all tickets
+// Retrieve all tickets or filter
 router.get("/tickets", [authjwt.verifyToken], ticketController.findAll);
 
 // Retrieve a single ticket with id
-router.get("/tickets/:id", ticketController.findOne);
+router.post("/tickets/find", ticketController.findOne);
 
 // Update a ticket with id
 router.put("/tickets/:id", ticketController.update);
