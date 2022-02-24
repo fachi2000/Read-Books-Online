@@ -5,7 +5,7 @@
 
 *SET UP*
 
-#1: Open VS Code and open the folder Assigment.
+#1: Open VS Code and open the folder Assigment.\n
 #2: You should be able to see a 'back-end' folder and a 'front-end' folder.
 #3: Open the terminal on VS Code and run the command 'npm install' on both folders to install dependancies
 #4: You should have a new folder created name 'node_modules' in both folders
