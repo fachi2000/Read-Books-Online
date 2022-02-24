@@ -12,9 +12,9 @@
 
 *START APP*
 
-#5: After the intsallation, in the 'back-end' folder, run the command 'nodemon' to start the server.</br>
+#5: After the installation, in the 'back-end' folder, run the command 'nodemon' to start the server.</br>
 #6: Now, in the 'front-end' folder, run the command 'npm start' to run the front-end.</br>
-#7: Open your favourite browser (GC is recommended) in the URL put the following -> 'http://localhost:3000'
+#7: Open your favourite browser (GC is recommended) in the URL put the following -> 'http://localhost:3000'</br>
 #8: You should be able to now use the application.</br>
 
 *WARNING*
