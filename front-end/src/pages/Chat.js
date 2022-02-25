@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,14 @@ const Chat = () => {
 
   const socket = io.connect("http://localhost:3050/chat");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (AuthService.getCurrentUser() == null) {
+      AuthService.logout();
+      navigate("/login");
+      window.location.reload();
+    }
+  }, []);
 
   return (
     <div class="container d-flex justify-content-center">

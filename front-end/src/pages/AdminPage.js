@@ -102,20 +102,26 @@ const Home = () => {
   };
 
   useEffect(() => {
-    UserService.getUsers().then(
-      (response) => {
-        setPrivateUsers(response.data);
-      },
-      (error) => {
-        console.log("Private page", error.response);
-        // Invalid token
-        if (error.response && error.response.status === 403) {
-          AuthService.logout();
-          navigate("/login");
-          window.location.reload();
+    if (user && user.role === "admin") {
+      console.log(user);
+      UserService.getUsers().then(
+        (response) => {
+          setPrivateUsers(response.data);
+        },
+        (error) => {
+          console.log("Private page", error.response);
+          // Invalid token
+          if (error.response && error.response.status === 403) {
+            AuthService.logout();
+            navigate("/login");
+            window.location.reload();
+          }
         }
-      }
-    );
+      );
+    } else {
+      navigate("/home");
+      window.location.reload();
+    }
   }, []);
 
   return (
