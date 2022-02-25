@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import AuthService from "./services/auth.service";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./pages/Home";
-import Chat from "./pages/Chat";
-import AdminPage from "./pages/AdminPage";
-import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
+import Home from "./pages/Home/Home";
+import Chat from "./pages/Chat/Chat";
+import AdminPage from "./pages/Admin/AdminPage";
+import SignUp from "./pages/SignUp/SignUp";
+import Login from "./pages/Login/Login";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);

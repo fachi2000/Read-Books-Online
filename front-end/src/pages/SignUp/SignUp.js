@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {

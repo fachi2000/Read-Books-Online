@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
-import TicketsService from "../services/ticket.service";
-import UserService from "../services/user.service";
-import AuthService from "../services/auth.service";
+import TicketsService from "../../services/ticket.service";
+import AuthService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import {
   BsFillTrashFill,
