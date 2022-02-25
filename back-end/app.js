@@ -91,4 +91,5 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+//chai error if chatSocket included
 module.exports = { app, chatSocket };

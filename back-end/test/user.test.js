@@ -6,30 +6,30 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 //the parent block
-describe("Testing the /ticket path", () => {
-  //Testing GET /ticket
-  describe("GET /ticket", () => {
+describe("Testing the /user path", () => {
+  //Testing GET /user
+  describe("GET /user", () => {
     it("it should return a welcome message", (done) => {
       chai
         .request(server)
-        .get("/ticket")
+        .get("/user")
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.should.have.property("message");
           res.body.should.have
             .property("message")
-            .eql("Welcome to the ticket api");
+            .eql("Welcome to the user api.");
           done();
         });
     });
   });
 
-  describe("GET /ticket/tickets", () => {
-    it("it should not GET all the tickets as needs auth", (done) => {
+  describe("GET /user/users", () => {
+    it("it should not GET all as needs auth", (done) => {
       chai
         .request(server)
-        .get("/ticket/tickets")
+        .get("/user/users")
         .end((err, res) => {
           res.should.have.status(403);
           done();
@@ -37,16 +37,15 @@ describe("Testing the /ticket path", () => {
     });
   });
   //POST
-  describe("POST /ticket/create", () => {
-    it("it should not POST a ticket without name field", (done) => {
-      let ticket = {
-        needsMoreInfo: false,
-        userId: "client@client.com",
+  describe("POST /user/register", () => {
+    it("it should not POST an user without name field", (done) => {
+      let user = {
+        password: "123",
       };
       chai
         .request(server)
-        .post("/ticket/create")
-        .send(ticket)
+        .post("/user/register")
+        .send(user)
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.be.a("object");
@@ -55,49 +54,48 @@ describe("Testing the /ticket path", () => {
           done();
         });
     });
-    it("it should POST a ticket ", (done) => {
-      let ticket = {
-        name: "The Chai Test",
-        needsMoreInfo: false,
-        userId: "client@client.com",
+    it("it should POST a user ", (done) => {
+      let user = {
+        email: "chai@chai.com",
+        password: "123",
       };
       chai
         .request(server)
-        .post("/ticket/create")
-        .send(ticket)
+        .post("/user/register")
+        .send(user)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.should.have.property("_id");
-          res.body.should.have.property("name");
-          res.body.should.have.property("needsMoreInfo");
-          res.body.should.have.property("userId");
+          res.body.should.have.property("email");
+          res.body.should.have.property("password");
           done();
         });
     });
   });
   //PUT
-  describe("update the ticket name to ChaiEdited: ", () => {
-    it("should update the name from THe Chai Test to ChaiEdited", (done) => {
-      const newTicket = {
-        name: "Karate",
+  describe("update the role of the use to employee ", () => {
+    it("should update role from client to employee", (done) => {
+      const newRole = {
+        role: "client",
       };
       chai
         .request(server)
-        .put("/ticket/tickets/6216902255287a8e1a70ce70")
-        .send(newTicket)
+        .put("/user/users/62039a39039b4a4342b1742f")
+        .send(newRole)
         .end(function (err, res) {
           res.should.have.status(200);
           done();
         });
     });
   });
+
   //DELETE
-  describe("ticket should be deleted ", () => {
-    it("should delete the ticket specified", (done) => {
+  describe("user should be deleted ", () => {
+    it("should delete the user specified", (done) => {
       chai
         .request(server)
-        .delete("/ticket/tickets/62192bbda628104a2e54cd15")
+        .delete("/user/users/62014aa27b6da61ec54912bd")
         .end(function (err, res) {
           res.should.have.status(200);
           done();

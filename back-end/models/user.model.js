@@ -16,12 +16,6 @@ module.exports = (mongoose) => {
         type: String, //client, employee, admin
         required: true,
       },
-      tickets: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "tickets",
-        },
-      ],
       dateCreated: {
         type: Date,
         required: true,

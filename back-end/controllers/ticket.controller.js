@@ -26,24 +26,15 @@ exports.create = (req, res) => {
 
   ticket
     .save()
-    .then((ticketData) => {
-      console.log("Ticket saved in the database: " + ticketData);
-
-      // Now update the user by adding the association
-      User.findByIdAndUpdate(
-        req.body.userId, // //We assume userid is an attribute in the JSON
-        { $push: { tickets: ticketData._id } },
-        { new: true, useFindAndModify: false }
-      ).then((userData) => {
-        console.log(`The updated user: ${userData}`);
-        // Returning the new Ticket
-        res.send(ticketData);
-      });
+    .then((data) => {
+      console.log("Ticket saved in the database: " + data);
+      res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Ticket.",
+          "Here " + err.message ||
+          "Some error occurred while creating the Ticket.",
       });
     });
 };

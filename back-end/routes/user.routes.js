@@ -5,8 +5,8 @@ var router = express.Router();
 
 var userController = require("../controllers/user.controller");
 
-router.get("/", function (req, res, next) {
-  res.json({ message: "Welcome to the user management subsystem api." });
+router.get("/", function (req, res) {
+  res.json({ message: "Welcome to the user api." });
 });
 
 // register a new user

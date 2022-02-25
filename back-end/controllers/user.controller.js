@@ -103,7 +103,7 @@ exports.findOne = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving tickets.",
+        message: err.message || "Some error occurred while retrieving users.",
       });
     });
 };
@@ -118,7 +118,7 @@ exports.update = (req, res) => {
     { upsert: true },
     function (err, doc) {
       if (err) return res.send(500, { error: err });
-      return res.send("Succesfully updated ticket.");
+      return res.send("Succesfully updated user.");
     }
   );
   User.findOneAndUpdate(
@@ -138,15 +138,24 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-  let myquery = { _id: req.params.id };
-  console.log(myquery);
-  User.findOneAndDelete(myquery, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Deleted User : ", docs);
-    }
-  });
+  const id = req.params.id;
+  User.findByIdAndRemove(id)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete User with id=${id}. Maybe User was not found!`,
+        });
+      } else {
+        res.send({
+          message: "User was deleted successfully",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not delete User with id=" + id,
+      });
+    });
 };
 
 // Delete all Users from the database.
