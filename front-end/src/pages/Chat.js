@@ -23,8 +23,8 @@ const Chat = () => {
       <div class="card mt-4 text">
         <div class="d-flex flex-row justify-content-between p-3 adiv bg-success text-white">
           {" "}
-          <i class="fas fa-chevron-left"></i>{" "}
-          <span class="pb-3">Live chat</span> <i class="fas fa-times"></i>{" "}
+          <i class="fas fa-chevron-left"></i> <span class="pb-3">Chat</span>{" "}
+          <i class="fas fa-times"></i>{" "}
         </div>
         <div class="d-flex flex-row p-3">
           {" "}
