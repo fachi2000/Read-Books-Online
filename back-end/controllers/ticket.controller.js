@@ -82,11 +82,15 @@ exports.findOne = async (req, res) => {
 
   //We use req.query.name to get query string from the Request and consider it as condition for findAll() method.
   var condition;
-
   if (user.role === "client" && searchTicket !== undefined) {
     condition = { userId: user.email, name: new RegExp(searchTicket, "i") };
   } else if (user.role !== "client" && searchTicket !== undefined) {
-    condition = { name: new RegExp(searchTicket, "i") };
+    condition = {
+      $or: [
+        { name: new RegExp(searchTicket, "i") },
+        { userId: new RegExp(searchTicket, "i") },
+      ],
+    };
   } else {
     condition = { name: { $regex: /NOTFOUND/ } };
   }
