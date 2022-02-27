@@ -117,8 +117,7 @@ const Home = () => {
     e.preventDefault();
     if (bookName !== "") {
       TicketsService.createTicket(bookName, user.email);
-      setMsgColor("text-success");
-      setMsg("Request submitted succesfully");
+      setRequestShow(false);
     } else {
       setMsgColor("text-danger");
       setMsg("Please enter a value");
@@ -131,8 +130,7 @@ const Home = () => {
     console.log("PRICE" + price);
     if (price !== "" && price > 0) {
       TicketsService.setTicketPrice(ticketId, price, threshold);
-      setMsgColor("text-success");
-      setMsg("Price has been set");
+      setPriceShow(false);
       retrieveTickets();
     } else {
       setMsgColor("text-danger");
@@ -146,22 +144,21 @@ const Home = () => {
     TicketsService.validateTicket(ticketId, user.email);
     setMsgColor("text-success");
     setMsg("Ticket has been validated");
+    setValidateShow(false);
     retrieveTickets();
   };
 
   const handleMoreInformation = (e, ticketID) => {
     e.preventDefault();
     TicketsService.returnTicket(ticketID);
-    setMsgColor("text-success");
-    setMsg("Ticket has been sent to the client");
+    setValidateShow();
     retrieveTickets();
   };
 
   const handleApprove = (e, ticketID) => {
     e.preventDefault();
     TicketsService.approveTicket(ticketID);
-    setMsgColor("text-success");
-    setMsg("Ticket has been approved");
+    setApproveShow(false);
     retrieveTickets();
   };
 
@@ -170,6 +167,7 @@ const Home = () => {
     TicketsService.denyTicket(ticketID);
     setMsgColor("text-danger");
     setMsg("Ticket has been denied");
+    setApproveShow(false);
     retrieveTickets();
   };
 
@@ -177,7 +175,7 @@ const Home = () => {
     e.preventDefault();
     TicketsService.deleteTicket(_id);
     setMsgColor("text-success");
-    setMsg("Deleted succesfully");
+    setDeleteShow(false);
     retrieveTickets();
   };
 
@@ -185,8 +183,7 @@ const Home = () => {
     e.preventDefault();
     if (newBookName !== "") {
       TicketsService.updateTicket(ticketId, newName);
-      setMsgColor("text-success");
-      setMsg("Updated succesfully");
+      setEditShow(false);
       retrieveTickets();
     } else {
       setMsgColor("text-danger");
