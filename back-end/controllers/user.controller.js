@@ -92,7 +92,12 @@ exports.findOne = (req, res) => {
   var condition;
 
   if (searchUser !== undefined) {
-    condition = { email: new RegExp(searchUser, "i") };
+    condition = {
+      $or: [
+        { email: new RegExp(searchUser, "i") },
+        { role: new RegExp(searchUser, "i") },
+      ],
+    };
   } else {
     condition = { email: { $regex: /NOTFOUND/ } };
   }

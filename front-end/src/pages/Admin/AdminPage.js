@@ -62,11 +62,29 @@ const Home = () => {
 
   const user = AuthService.getCurrentUser();
 
+  const retrieveUsers = () => {
+    UserService.getUsers().then(
+      (res) => {
+        setPrivateUsers(res.data);
+      },
+      (error) => {
+        console.log("Private page", error.response);
+        // Invalid token
+        if (error.response && error.response.status === 403) {
+          AuthService.logout();
+          navigate("/login");
+          window.location.reload();
+        }
+      }
+    );
+  };
+
   const handleRequest = (e) => {
     e.preventDefault();
     if (email !== "" || psw !== "") {
       UserService.createUser(email, psw);
-      setMsg("Request submitted succesfully");
+      setRequestShow(false);
+      retrieveUsers();
     } else {
       setMsg("Please enter a value");
     }
@@ -75,7 +93,8 @@ const Home = () => {
   const handleDelete = (e, _id) => {
     e.preventDefault();
     UserService.deleteUser(_id);
-    setMsg("Deleted succesfully");
+    setDeleteShow(false);
+    retrieveUsers();
   };
 
   const handleEdit = (e, userId, role) => {
@@ -83,7 +102,8 @@ const Home = () => {
     console.log(newRole);
     if (newRole !== "" && newRole !== "Choose Role") {
       UserService.updateUser(userId, role.toLowerCase());
-      setMsg("Updated succesfully");
+      setEditShow(false);
+      retrieveUsers();
     } else {
       setMsg("Please choose a role");
     }
@@ -103,10 +123,9 @@ const Home = () => {
 
   useEffect(() => {
     if (user && user.role === "admin") {
-      console.log(user);
       UserService.getUsers().then(
-        (response) => {
-          setPrivateUsers(response.data);
+        (res) => {
+          setPrivateUsers(res.data);
         },
         (error) => {
           console.log("Private page", error.response);
