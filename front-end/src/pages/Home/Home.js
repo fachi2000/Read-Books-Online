@@ -45,6 +45,7 @@ const Home = () => {
   const handleRequestClose = () => setRequestShow(false);
   const handleRequestShow = () => {
     setMsg("");
+    setBookName("");
     setRequestShow(true);
   };
 
@@ -72,9 +73,9 @@ const Home = () => {
   const handleEditClose = () => setEditShow(false);
   const handleEditShow = (e, id) => {
     setMsg("");
+    setNewBookName("");
     setTicketId(id);
     setEditShow(true);
-    console.log(threshold);
   };
 
   const handleDeleteClose = () => setDeleteShow(false);
@@ -95,6 +96,23 @@ const Home = () => {
     setThreshold(rand);
   };
 
+  const retrieveTickets = () => {
+    TicketsService.getTickets(user).then(
+      (res) => {
+        setPrivateTickets(res.data);
+      },
+      (error) => {
+        console.log("Private page", error.response);
+        // Invalid token
+        if (error.response && error.response.status === 403) {
+          AuthService.logout();
+          navigate("/login");
+          window.location.reload();
+        }
+      }
+    );
+  };
+
   const handleRequest = (e) => {
     e.preventDefault();
     if (bookName !== "") {
@@ -105,6 +123,7 @@ const Home = () => {
       setMsgColor("text-danger");
       setMsg("Please enter a value");
     }
+    retrieveTickets();
   };
 
   const handleSetPrice = (e, price) => {
@@ -114,6 +133,7 @@ const Home = () => {
       TicketsService.setTicketPrice(ticketId, price, threshold);
       setMsgColor("text-success");
       setMsg("Price has been set");
+      retrieveTickets();
     } else {
       setMsgColor("text-danger");
       setMsg("Please enter a value or a greater value than 0");
@@ -126,6 +146,7 @@ const Home = () => {
     TicketsService.validateTicket(ticketId, user.email);
     setMsgColor("text-success");
     setMsg("Ticket has been validated");
+    retrieveTickets();
   };
 
   const handleMoreInformation = (e, ticketID) => {
@@ -133,6 +154,7 @@ const Home = () => {
     TicketsService.returnTicket(ticketID);
     setMsgColor("text-success");
     setMsg("Ticket has been sent to the client");
+    retrieveTickets();
   };
 
   const handleApprove = (e, ticketID) => {
@@ -140,6 +162,7 @@ const Home = () => {
     TicketsService.approveTicket(ticketID);
     setMsgColor("text-success");
     setMsg("Ticket has been approved");
+    retrieveTickets();
   };
 
   const handleDeny = (e, ticketID) => {
@@ -147,6 +170,7 @@ const Home = () => {
     TicketsService.denyTicket(ticketID);
     setMsgColor("text-danger");
     setMsg("Ticket has been denied");
+    retrieveTickets();
   };
 
   const handleDelete = (e, _id) => {
@@ -154,6 +178,7 @@ const Home = () => {
     TicketsService.deleteTicket(_id);
     setMsgColor("text-success");
     setMsg("Deleted succesfully");
+    retrieveTickets();
   };
 
   const handleEdit = (e, ticketId, newName) => {
@@ -162,6 +187,7 @@ const Home = () => {
       TicketsService.updateTicket(ticketId, newName);
       setMsgColor("text-success");
       setMsg("Updated succesfully");
+      retrieveTickets();
     } else {
       setMsgColor("text-danger");
       setMsg("Please enter a value");
