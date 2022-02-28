@@ -238,127 +238,133 @@ const Home = () => {
         </Button>
       </div>
       <br></br>
-      {privateTickets.map(
-        ({
-          _id,
-          name,
-          dateCreated,
-          validatedBy,
-          validationDate,
-          needsMoreInfo,
-          userId,
-          price,
-          purchased,
-          index,
-        }) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: purchased === true ? "#e0f4f4" : "white",
-            }}
-          >
-            <div class="d-flex justify-content-between">
-              <div>
-                <h4>
-                  <b>
-                    <i>{name}</i>
-                  </b>
-                </h4>
-                <h6>
-                  Requested: {dateCreated.slice(0, 10)} at{" "}
-                  {dateCreated.slice(11, 16)}
-                </h6>
-                {validatedBy && (
+      {privateTickets.length > 0 ? (
+        privateTickets.map(
+          ({
+            _id,
+            name,
+            dateCreated,
+            validatedBy,
+            validationDate,
+            needsMoreInfo,
+            userId,
+            price,
+            purchased,
+            index,
+          }) => (
+            <div
+              key={index}
+              style={{
+                backgroundColor: purchased === true ? "#e0f4f4" : "white",
+              }}
+            >
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h4>
+                    <b>
+                      <i>{name}</i>
+                    </b>
+                  </h4>
                   <h6>
-                    Validated by:{" "}
-                    <span style={{ color: "#2986cc" }}> {validatedBy}</span>
+                    Requested: {dateCreated.slice(0, 10)} at{" "}
+                    {dateCreated.slice(11, 16)}
                   </h6>
-                )}
-                {validatedBy && (
-                  <h6>
-                    Validation date: {validationDate.slice(0, 10)}{" "}
-                    {validationDate && validationDate.slice(11, 16)}
-                  </h6>
-                )}
-                {needsMoreInfo && (
-                  <h6>Needs more information: {needsMoreInfo.toString()}</h6>
-                )}
-                {price && (
-                  <h6>
-                    Price:{" "}
-                    <span style={{ color: "#2986cc" }}> {price}&#163;</span>
-                  </h6>
-                )}
-              </div>
-              <div>
-                <b>Created by:</b> {userId}
-              </div>
-              <div>
-                {user && !purchased && price && user.role === "admin" && (
-                  <div className="mb-1">
-                    <Button
-                      variant="success"
-                      onClick={(e) => handleApproveShow(e, _id)}
-                    >
-                      <BsCheckCircleFill />
-                    </Button>
-                  </div>
-                )}
-                {user &&
-                  !validatedBy &&
-                  !needsMoreInfo &&
-                  (user.role === "employee" || user.role === "admin") && (
+                  {validatedBy && (
+                    <h6>
+                      Validated by:{" "}
+                      <span style={{ color: "#2986cc" }}> {validatedBy}</span>
+                    </h6>
+                  )}
+                  {validatedBy && (
+                    <h6>
+                      Validation date: {validationDate.slice(0, 10)}{" "}
+                      {validationDate && validationDate.slice(11, 16)}
+                    </h6>
+                  )}
+                  {needsMoreInfo && (
+                    <h6>Needs more information: {needsMoreInfo.toString()}</h6>
+                  )}
+                  {price && (
+                    <h6>
+                      Price:{" "}
+                      <span style={{ color: "#2986cc" }}> {price}&#163;</span>
+                    </h6>
+                  )}
+                </div>
+                <div>
+                  <b>Created by:</b> {userId}
+                </div>
+                <div>
+                  {user && !purchased && price && user.role === "admin" && (
                     <div className="mb-1">
                       <Button
-                        style={{ color: "white" }}
-                        variant="info"
-                        onClick={(e) => handleValidateShow(e, _id)}
+                        variant="success"
+                        onClick={(e) => handleApproveShow(e, _id)}
                       >
-                        <BsFillFlagFill />
+                        <BsCheckCircleFill />
                       </Button>
                     </div>
                   )}
-                {user && validatedBy && !price && user.role === "employee" && (
-                  <div className="mb-1">
-                    <Button
-                      variant="warning"
-                      onClick={(e) => handlePriceShow(e, _id)}
-                    >
-                      <BsCurrencyPound />
-                    </Button>
-                  </div>
-                )}
+                  {user &&
+                    !validatedBy &&
+                    !needsMoreInfo &&
+                    user.role === "employee" && (
+                      <div className="mb-1">
+                        <Button
+                          style={{ color: "white" }}
+                          variant="info"
+                          onClick={(e) => handleValidateShow(e, _id)}
+                        >
+                          <BsFillFlagFill />
+                        </Button>
+                      </div>
+                    )}
+                  {user && validatedBy && !price && user.role === "employee" && (
+                    <div className="mb-1">
+                      <Button
+                        variant="warning"
+                        onClick={(e) => handlePriceShow(e, _id)}
+                      >
+                        <BsCurrencyPound />
+                      </Button>
+                    </div>
+                  )}
 
-                {user && !purchased && !price && (
-                  <div className="mb-1">
-                    <Button
-                      variant="primary"
-                      onClick={(e) => handleEditShow(e, _id)}
-                    >
-                      <BsFillPencilFill />
-                    </Button>
-                  </div>
-                )}
+                  {user && !purchased && !price && user.role === "client" && (
+                    <div className="mb-1">
+                      <Button
+                        variant="primary"
+                        onClick={(e) => handleEditShow(e, _id)}
+                      >
+                        <BsFillPencilFill />
+                      </Button>
+                    </div>
+                  )}
 
-                {!validationDate ||
-                user.role == "admin" ||
-                user.role == "employee" ? (
-                  <Button
-                    variant="danger"
-                    onClick={(e) => handleDeleteShow(e, _id)}
-                  >
-                    <BsFillTrashFill />
-                  </Button>
-                ) : (
-                  <p></p>
-                )}
+                  {!validationDate ||
+                  user.role == "admin" ||
+                  user.role == "employee" ? (
+                    <Button
+                      variant="danger"
+                      onClick={(e) => handleDeleteShow(e, _id)}
+                    >
+                      <BsFillTrashFill />
+                    </Button>
+                  ) : (
+                    <p></p>
+                  )}
+                </div>
               </div>
+              <hr></hr>
             </div>
-            <hr></hr>
-          </div>
+          )
         )
+      ) : (
+        <b>
+          There are no request at the moment.<hr></hr>
+        </b>
       )}
-      {user && (user.role === "client" || user.role === "employee") && (
+      {user && user.role === "client" && (
         <Button variant="primary" onClick={handleRequestShow}>
           Request new book
         </Button>
