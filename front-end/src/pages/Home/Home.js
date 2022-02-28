@@ -330,16 +330,20 @@ const Home = () => {
                     </div>
                   )}
 
-                  {user && !purchased && !price && user.role === "client" && (
-                    <div className="mb-1">
-                      <Button
-                        variant="primary"
-                        onClick={(e) => handleEditShow(e, _id)}
-                      >
-                        <BsFillPencilFill />
-                      </Button>
-                    </div>
-                  )}
+                  {user &&
+                    !purchased &&
+                    !price &&
+                    !validatedBy &&
+                    user.role === "client" && (
+                      <div className="mb-1">
+                        <Button
+                          variant="primary"
+                          onClick={(e) => handleEditShow(e, _id)}
+                        >
+                          <BsFillPencilFill />
+                        </Button>
+                      </div>
+                    )}
 
                   {!validationDate ||
                   user.role == "admin" ||
