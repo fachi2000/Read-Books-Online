@@ -361,7 +361,7 @@ const Home = () => {
         )
       ) : (
         <b>
-          There are no request at the moment.<hr></hr>
+          There are no requests at the moment.<hr></hr>
         </b>
       )}
       {user && user.role === "client" && (
