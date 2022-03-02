@@ -68,7 +68,6 @@ const Chat = () => {
           {" "}
           <textarea
             class="form-control"
-            rows="5"
             placeholder="Type your message"
           ></textarea>{" "}
         </div>
