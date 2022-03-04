@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import TicketsService from "../../services/ticket.service";
 import AuthService from "../../services/auth.service";
+import Pagination from "../../components/Pagination";
 import { useNavigate } from "react-router-dom";
 import {
   BsFillTrashFill,
@@ -16,6 +17,9 @@ const Home = () => {
   const [privateTickets, setPrivateTickets] = useState([]);
 
   const [threshold, setThreshold] = useState(0);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [requestsPerPage] = useState(4);
 
   const [reqShow, setRequestShow] = useState(false);
   const [validateShow, setValidateShow] = useState(false);
@@ -90,11 +94,11 @@ const Home = () => {
   const user = AuthService.getCurrentUser();
 
   const generateThreshold = () => {
-    const min = 1;
-    const max = 50;
-    const rand = Math.floor(min + Math.random() * (max - min));
-    setThreshold(rand);
+    const newThreshold = 30;
+    setThreshold(newThreshold);
   };
+
+  const calculatePage = () => {};
 
   const retrieveTickets = () => {
     TicketsService.getTickets(user).then(
@@ -222,6 +226,15 @@ const Home = () => {
     );
   }, []);
 
+  const indexOfLastRequest = currentPage * requestsPerPage;
+  const indexOfFirstRequest = indexOfLastRequest - requestsPerPage;
+  const currentRequests = privateTickets.slice(
+    indexOfFirstRequest,
+    indexOfLastRequest
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="Home">
       <h1 class="display-5">Welcome, here are all requests:</h1>
@@ -239,7 +252,7 @@ const Home = () => {
       </div>
       <br></br>
       {privateTickets.length > 0 ? (
-        privateTickets.map(
+        currentRequests.map(
           ({
             _id,
             name,
@@ -255,7 +268,7 @@ const Home = () => {
             <div
               key={index}
               style={{
-                backgroundColor: purchased === true ? "#e0f4f4" : "white",
+                backgroundColor: purchased === true ? "#E5FFDA" : "white",
               }}
             >
               <div class="d-flex justify-content-between">
@@ -368,6 +381,12 @@ const Home = () => {
           There are no requests at the moment.<hr></hr>
         </b>
       )}
+      <Pagination
+        requestsPerPage={requestsPerPage}
+        totalRequests={privateTickets.length}
+        paginate={paginate}
+      />
+
       {user && user.role === "client" && (
         <Button variant="primary" onClick={handleRequestShow}>
           Request new book
