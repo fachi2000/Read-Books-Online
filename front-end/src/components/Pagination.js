@@ -1,6 +1,12 @@
 import React from "react";
+import { Pagination } from "react-bootstrap";
 
-const Pagination = ({ requestsPerPage, totalRequests, paginate }) => {
+const PaginationComponent = ({
+  requestsPerPage,
+  totalRequests,
+  paginate,
+  currentPage,
+}) => {
   const pageNumber = [];
 
   for (let i = 1; i <= Math.ceil(totalRequests / requestsPerPage); i++) {
@@ -9,19 +15,19 @@ const Pagination = ({ requestsPerPage, totalRequests, paginate }) => {
 
   return (
     <div class="d-flex justify-content-center">
-      <nav>
-        <ul className="pagination">
-          {pageNumber.map((number) => (
-            <li key={number} active={number} className="page-item">
-              <a onClick={() => paginate(number)} className="page-link">
-                {number}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <Pagination>
+        {pageNumber.map((number) => (
+          <Pagination.Item
+            key={number}
+            active={number === currentPage}
+            onClick={() => paginate(number)}
+          >
+            {number}
+          </Pagination.Item>
+        ))}
+      </Pagination>
     </div>
   );
 };
 
-export default Pagination;
+export default PaginationComponent;

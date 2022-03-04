@@ -225,7 +225,6 @@ const Home = () => {
       }
     );
   }, []);
-
   const indexOfLastRequest = currentPage * requestsPerPage;
   const indexOfFirstRequest = indexOfLastRequest - requestsPerPage;
   const currentRequests = privateTickets.slice(
@@ -385,6 +384,7 @@ const Home = () => {
         requestsPerPage={requestsPerPage}
         totalRequests={privateTickets.length}
         paginate={paginate}
+        currentPage={currentPage}
       />
 
       {user && user.role === "client" && (
