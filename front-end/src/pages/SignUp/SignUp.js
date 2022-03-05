@@ -19,7 +19,9 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    if (password === repassword) {
+    if (password.length < 6) {
+      setError("Password has to be more that 6 characters");
+    } else if (password === repassword) {
       try {
         await AuthService.signup(email, password).then(
           (response) => {
@@ -35,8 +37,6 @@ const Signup = () => {
       } catch (err) {
         console.log(err);
       }
-    } else if (password.length < 6) {
-      setError("Password has to be more that 6 characters");
     } else {
       setError("Passwords don't match");
     }

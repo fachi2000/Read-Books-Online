@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Dropdown } from "react-bootstrap";
 import UserService from "../../services/user.service";
 import AuthService from "../../services/auth.service";
+import Pagination from "../../components/Pagination";
 import { useNavigate } from "react-router-dom";
 import { BsFillTrashFill, BsFillPencilFill, BsSearch } from "react-icons/bs";
 
 const Home = () => {
   const [privateUsers, setPrivateUsers] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(5);
 
   const [reqShow, setRequestShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
@@ -143,6 +147,12 @@ const Home = () => {
     }
   }, []);
 
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = privateUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="Home">
       <h1 class="display-5">Admin, here are all users:</h1>
@@ -160,7 +170,7 @@ const Home = () => {
         </Button>
       </div>
       <br></br>
-      {privateUsers.map(({ _id, email, dateCreated, role, index }) => (
+      {currentUsers.map(({ _id, email, dateCreated, role, index }) => (
         <div key={index}>
           <div class="d-flex justify-content-between">
             <div>
@@ -192,6 +202,12 @@ const Home = () => {
           <hr></hr>
         </div>
       ))}
+      <Pagination
+        requestsPerPage={usersPerPage}
+        totalRequests={privateUsers.length}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
 
       <Button variant="primary" onClick={handleRequestShow}>
         Create new user
