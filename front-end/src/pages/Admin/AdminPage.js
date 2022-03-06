@@ -10,7 +10,7 @@ const Home = () => {
   const [privateUsers, setPrivateUsers] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(5);
+  const [usersPerPage] = useState(4);
 
   const [reqShow, setRequestShow] = useState(false);
   const [editShow, setEditShow] = useState(false);
@@ -23,7 +23,7 @@ const Home = () => {
   const [msg, setMsg] = useState(null);
   const msgDiv = msg ? (
     <div className="error">
-      <p class="text-info">{msg}</p>
+      <p class="text-danger">{msg}</p>
     </div>
   ) : (
     ""
@@ -83,14 +83,26 @@ const Home = () => {
     );
   };
 
-  const handleRequest = (e) => {
+  const handleRequest = async (e) => {
     e.preventDefault();
-    if (email !== "" || psw !== "") {
-      UserService.createUser(email, psw);
-      setRequestShow(false);
-      retrieveUsers();
+    if (psw.length < 6) {
+      setMsg("Password has to be more that 6 characters");
+    } else if (email !== "" || psw !== "") {
+      try {
+        await UserService.createUser(email, psw).then(
+          (response) => {
+            setRequestShow(false);
+            retrieveUsers();
+          },
+          (error) => {
+            setMsg("This user already exitsts");
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
     } else {
-      setMsg("Please enter a value");
+      setMsg("Please enter credentials");
     }
   };
 
