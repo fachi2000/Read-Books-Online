@@ -219,15 +219,31 @@ exports.setTicketPrice = async (req, res) => {
         "\n\n" +
         "You can contact RBO any time. We hope to see you soon!",
     };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+  } else {
+    var mailOptions = {
+      from: '"Reed Books Online" <fachiAafNode41@outlook.com>',
+      to: "fachi252@gmail.com",
+      subject: "Purchase denied",
+      text:
+        "Hi! We are sorry we have not approved your purchase, here are the details:\n\n" +
+        "Book name: " +
+        ticket.name +
+        "\n" +
+        "Price:" +
+        req.body.price +
+        "£" +
+        "\n\n" +
+        "You can contact RBO any time. We hope to see you soon!",
+    };
   }
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 };
 
 // Update a Ticket by the id in the request
