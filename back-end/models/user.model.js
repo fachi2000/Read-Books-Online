@@ -20,6 +20,7 @@ module.exports = (mongoose) => {
         type: Date,
         required: true,
         default: Date.now,
+        immutable: true,
       },
     })
   );

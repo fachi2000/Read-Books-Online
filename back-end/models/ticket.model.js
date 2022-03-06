@@ -9,6 +9,7 @@ module.exports = (mongoose) => {
       dateCreated: {
         type: Date,
         required: true,
+        immutable: true,
         default: Date.now,
       },
       price: Number,
