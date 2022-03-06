@@ -25,12 +25,10 @@ var chatSocket = require("socket.io")({
 });
 // Importing the chat controller
 
-var chat = chatSocket
-  .of("/chat") //We are defining an endpoint for the chat
-  .on("connection", function (socket) {
-    console.log(socket.id);
-    chatController.respond(chat, socket);
-  });
+var chat = chatSocket.of("/chat").on("connection", function (socket) {
+  console.log("User connected: " + socket.id);
+  chatController.respond(chat, socket);
+});
 
 var app = express();
 

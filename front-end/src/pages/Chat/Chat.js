@@ -1,15 +1,15 @@
 import io from "socket.io-client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import AuthService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 
-const Chat = () => {
-  const user = AuthService.getCurrentUser();
+const socket = io.connect("http://localhost:3050/chat");
 
-  const [state, setState] = useState({ message: "", name: "" });
+const Chat = () => {
+  const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
-  const socketRef = useRef();
+  const userName = AuthService.getCurrentUser().email;
 
   const navigate = useNavigate();
 
@@ -19,37 +19,39 @@ const Chat = () => {
       navigate("/login");
       window.location.reload();
     }
-    socketRef.current = io.connect("http://localhost:3050/chat");
-    socketRef.current.on("message", ({ name, message }) => {
-      setChat([...chat, { name, message }]);
+    socket.on("message", (payload) => {
+      setChat([...chat, payload]);
     });
-    return () => socketRef.current.disconnect();
-  }, [chat]);
+  });
 
-  const onTextChange = (e) => {
-    setState({ message: e.target.value, name: user.email });
-  };
-
-  const onMessageSubmit = (e) => {
-    const { name, message } = state;
-    socketRef.current.emit("message", { name, message });
+  const sendMessage = (e) => {
     e.preventDefault();
-    setState({ message: "", name });
+    console.log(message);
+    socket.emit("message", { userName, message });
+    setMessage("");
   };
 
   const renderChat = () => {
-    return chat.map(({ name, message }, index) => (
+    return chat.map((payload, index) => (
       <div class="d-flex flex-row p-1" key={index}>
         <div class="bg-white mr-2 p-1">
           <span class="text-muted">
-            {name}:<br></br>
+            {payload.userName}:<br></br>
           </span>
           <span>
-            <b>{message}</b>
+            <b>{payload.message}</b>
           </span>
         </div>
       </div>
     ));
+  };
+  const divStyle = {
+    overflowY: "scroll",
+    border: "none",
+    width: "100%",
+    float: "left",
+    height: "300px",
+    position: "relative",
   };
 
   return (
@@ -64,15 +66,18 @@ const Chat = () => {
             <h5>Welcome to RBO Help Center</h5>
           </div>
         </div>
-        {renderChat()}
+        <div style={divStyle}>{renderChat()}</div>
+
         <div class="form-group px-3">
           <form class="form-group">
             <div className="messages-input">
               <input
                 type="text"
-                value={state.message}
-                onChange={(e) => onTextChange(e)}
+                name="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="form-control form-group"
+                placeholder="Type message..."
                 required
               ></input>
             </div>
@@ -80,7 +85,7 @@ const Chat = () => {
               <button
                 type="button"
                 className="btn btn-success"
-                onClick={onMessageSubmit}
+                onClick={sendMessage}
               >
                 Send
               </button>
