@@ -18,9 +18,12 @@ const Home = () => {
 
   const [threshold, setThreshold] = useState(0);
 
+  //pagination
   const [currentPage, setCurrentPage] = useState(1);
+  //change this state to see more ore less requests per page
   const [requestsPerPage] = useState(3);
 
+  //all different modals: edit, create, approve etc.
   const [reqShow, setRequestShow] = useState(false);
   const [validateShow, setValidateShow] = useState(false);
   const [priceShow, setPriceShow] = useState(false);
