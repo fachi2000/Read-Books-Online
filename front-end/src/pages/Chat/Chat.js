@@ -2,6 +2,7 @@ import io from "socket.io-client";
 import React, { useState, useEffect } from "react";
 import AuthService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import ReactScrollableFeed from "react-scrollable-feed";
 
 const socket = io.connect("http://localhost:3050/chat");
 
@@ -32,21 +33,10 @@ const Chat = () => {
   };
 
   const renderChat = () => {
-    return chat.map((payload, index) => (
-      <div class="d-flex flex-row p-1" key={index}>
-        <div class="bg-white mr-2 p-1">
-          <span class="text-muted">
-            {payload.userName}:<br></br>
-          </span>
-          <span>
-            <b>{payload.message}</b>
-          </span>
-        </div>
-      </div>
-    ));
+    return;
   };
+
   const divStyle = {
-    overflowY: "scroll",
     border: "none",
     width: "100%",
     float: "left",
@@ -66,7 +56,23 @@ const Chat = () => {
             <h5>Welcome to RBO Help Center</h5>
           </div>
         </div>
-        <div style={divStyle}>{renderChat()}</div>
+
+        <div style={divStyle}>
+          <ReactScrollableFeed>
+            {chat.map((payload, index) => (
+              <div class="d-flex flex-row p-1" key={index}>
+                <div class="bg-white mr-2 p-1">
+                  <span class="text-muted">
+                    {payload.userName}:<br></br>
+                  </span>
+                  <span>
+                    <b>{payload.message}</b>
+                  </span>
+                </div>
+              </div>
+            ))}
+          </ReactScrollableFeed>
+        </div>
 
         <div class="form-group px-3">
           <form class="form-group">
