@@ -19,7 +19,7 @@ const Home = () => {
   const [threshold, setThreshold] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [requestsPerPage] = useState(4);
+  const [requestsPerPage] = useState(3);
 
   const [reqShow, setRequestShow] = useState(false);
   const [validateShow, setValidateShow] = useState(false);

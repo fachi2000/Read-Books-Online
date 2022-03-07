@@ -4,9 +4,6 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-const { InMemoryMessageStore } = require("./messageStore");
-const messageStore = new InMemoryMessageStore();
-
 //chat controller
 var chatController = require("./controllers/chat.controller");
 
