@@ -273,32 +273,32 @@ const Home = () => {
               <div class="d-flex justify-content-between">
                 <div>
                   <h4>
-                    <b>
-                      <i>{name}</i>
-                    </b>
+                    <b>{name}</b>
                   </h4>
                   <h6>
-                    Requested: {dateCreated.slice(0, 10)} at{" "}
+                    <i>Requested:</i> {dateCreated.slice(0, 10)} at{" "}
                     {dateCreated.slice(11, 16)}
                   </h6>
                   {validatedBy && (
                     <h6>
-                      Validated by:{" "}
+                      <i>Validated by:</i>{" "}
                       <span style={{ color: "#2986cc" }}> {validatedBy}</span>
                     </h6>
                   )}
                   {validatedBy && (
                     <h6>
-                      Validation date: {validationDate.slice(0, 10)}{" "}
+                      <i>Validation date:</i> {validationDate.slice(0, 10)}{" "}
                       {validationDate && validationDate.slice(11, 16)}
                     </h6>
                   )}
                   {needsMoreInfo && (
-                    <h6>Needs more information: {needsMoreInfo.toString()}</h6>
+                    <h6>
+                      <i>Needs more information:</i> {needsMoreInfo.toString()}
+                    </h6>
                   )}
                   {price && (
                     <h6>
-                      Price:{" "}
+                      <i>Price:</i>{" "}
                       <span style={{ color: "#2986cc" }}> {price}&#163;</span>
                     </h6>
                   )}
