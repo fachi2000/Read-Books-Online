@@ -10,7 +10,13 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
-  const userName = AuthService.getCurrentUser().email;
+  const user = AuthService.getCurrentUser();
+
+  var userName = "";
+
+  if (user !== null) {
+    userName = user.email;
+  }
 
   const navigate = useNavigate();
 
@@ -30,10 +36,6 @@ const Chat = () => {
     console.log(message);
     socket.emit("message", { userName, message });
     setMessage("");
-  };
-
-  const renderChat = () => {
-    return;
   };
 
   const divStyle = {
