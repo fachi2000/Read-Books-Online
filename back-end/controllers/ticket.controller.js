@@ -219,22 +219,6 @@ exports.setTicketPrice = async (req, res) => {
         "\n\n" +
         "You can contact RBO any time. We hope to see you soon!",
     };
-  } else {
-    var mailOptions = {
-      from: '"Reed Books Online" <fachiAafNode41@outlook.com>',
-      to: "fachi252@gmail.com",
-      subject: "Purchase denied",
-      text:
-        "Hi! We are sorry we have not approved your purchase, here are the details:\n\n" +
-        "Book name: " +
-        ticket.name +
-        "\n" +
-        "Price:" +
-        req.body.price +
-        "£" +
-        "\n\n" +
-        "You can contact RBO any time. We hope to see you soon!",
-    };
   }
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -285,6 +269,36 @@ exports.denyTicket = (req, res) => {
       return res.send("Succesfully updated ticket.");
     }
   );
+  const transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com", // hostname
+    secureConnection: false, // TLS requires secureConnection to be false
+    port: 587, // port for secure SMTP
+    tls: {
+      ciphers: "SSLv3",
+    },
+    auth: {
+      user: "fachiAafNode41@outlook.com",
+      pass: "123123PP123",
+    },
+  });
+
+  var mailOptions = {
+    from: '"Reed Books Online" <fachiAafNode41@outlook.com>',
+    to: "fachi252@gmail.com",
+    subject: "Purchase denied",
+    text:
+      "Hi! We are sorry we have not approved your purchase, please chat with us!\n\n" +
+      "\n\n" +
+      "You can contact RBO any time. We hope to see you soon!",
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 };
 
 // Delete a Ticket with the specified id in the request
