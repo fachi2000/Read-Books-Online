@@ -78,8 +78,8 @@ exports.findOne = async (req, res) => {
   } else if (user.role !== "client" && searchTicket !== undefined) {
     condition = {
       $or: [
-        { name: new RegExp(searchTicket, "i") },
-        { userId: new RegExp(searchTicket, "i") },
+        { name: new RegExp(searchTicket) },
+        { userId: new RegExp(searchTicket) },
       ],
     };
   } else {
