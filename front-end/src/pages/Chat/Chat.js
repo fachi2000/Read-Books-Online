@@ -25,6 +25,9 @@ const Chat = () => {
       AuthService.logout();
       navigate("/login");
       window.location.reload();
+    } else if (user.role === "admin") {
+      navigate("/home");
+      window.location.reload();
     }
     socket.on("message", (payload) => {
       setChat([...chat, payload]);
