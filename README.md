@@ -1,8 +1,10 @@
 # MongoDB, Express, React, Nodejs Full Stack Application
 A university project for Applications: Architectures and Frameworks. It includes features such as:
+- Bootstrap 
 - **CRUD** operations
 - Authentication 
 - Chat 
+- Mail Notifications
 - Front-end & Back-end automated testing. 
 
 ## Setup & Run project
