@@ -15,7 +15,7 @@ A university project for Applications: Architectures and Frameworks. Users are a
 
 *SET UP*
 
-#1: Open VS Code and open the folder Assigment.</br>
+#1: Download soruce code.</br>
 #2: You should be able to see a 'back-end' folder and a 'front-end' folder.</br>
 #3: Open the terminal on VS Code and run the command 'npm install' on both folders to install dependancies.</br>
 #4: You should have a new folder created name 'node_modules' in both folders.</br>
