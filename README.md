@@ -1,11 +1,10 @@
 # MongoDB, Express, React, Nodejs Full Stack Application
-#A university project for Applications: Architectures and Frameworks
+A university project for Applications: Architectures and Frameworks
 
 
-#Instructions to setup and run the project
+## Setup & Run project
 
 *SET UP*
-
 
 #1: Open VS Code and open the folder Assigment.</br>
 #2: You should be able to see a 'back-end' folder and a 'front-end' folder.</br>
