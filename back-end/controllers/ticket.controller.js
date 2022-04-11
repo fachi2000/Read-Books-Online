@@ -1,4 +1,5 @@
 const db = require("../models");
+require("dotenv").config();
 
 const Ticket = db.tickets;
 const User = db.users;
@@ -191,7 +192,7 @@ exports.setTicketPrice = async (req, res) => {
     },
     auth: {
       user: "fachiAafNode41@outlook.com",
-      pass: "123123PP123",
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 

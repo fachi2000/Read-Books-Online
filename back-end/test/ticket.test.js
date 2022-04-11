@@ -77,14 +77,14 @@ describe("Testing the /ticket path", () => {
     });
   });
   //PUT
-  describe("update the ticket name to ChaiEdited: ", () => {
+  describe("update the ticket name to Karate: ", () => {
     it("should update the name from THe Chai Test to ChaiEdited", (done) => {
       const newTicket = {
         name: "Karate",
       };
       chai
         .request(server)
-        .put("/ticket/tickets/6216902255287a8e1a70ce70")
+        .put("/ticket/tickets/6222843707fa215e50fc8ee8")
         .send(newTicket)
         .end(function (err, res) {
           res.should.have.status(200);
@@ -97,7 +97,7 @@ describe("Testing the /ticket path", () => {
     it("should delete the ticket specified", (done) => {
       chai
         .request(server)
-        .delete("/ticket/tickets/62192bbda628104a2e54cd15")
+        .delete("/ticket/tickets/622287a007fa215e50fc8f10")
         .end(function (err, res) {
           res.should.have.status(200);
           done();

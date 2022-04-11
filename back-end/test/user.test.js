@@ -81,7 +81,7 @@ describe("Testing the /user path", () => {
       };
       chai
         .request(server)
-        .put("/user/users/62039a39039b4a4342b1742f")
+        .put("/user/users/62234c6a95bd82808ecd716a")
         .send(newRole)
         .end(function (err, res) {
           res.should.have.status(200);
@@ -95,7 +95,7 @@ describe("Testing the /user path", () => {
     it("should delete the user specified", (done) => {
       chai
         .request(server)
-        .delete("/user/users/62014aa27b6da61ec54912bd")
+        .delete("/user/users/62234c1495bd82808ecd7168")
         .end(function (err, res) {
           res.should.have.status(200);
           done();
