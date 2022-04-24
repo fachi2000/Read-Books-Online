@@ -161,7 +161,7 @@ const Home = () => {
     setValidateShow();
     retrieveTickets();
   };
-
+  //handleRequest
   const handleApprove = (e, ticketID) => {
     e.preventDefault();
     TicketsService.approveTicket(ticketID);
