@@ -1,5 +1,5 @@
 # MongoDB, Express, React, Nodejs Full Stack Application
-A university project for Applications: Architectures and Frameworks. Users are able to sign up and purchase books or audio-books at RBO. These requests are then processed by employees and finally validated by administrators.
+A university project for Applications: Architectures & Frameworks. Users are able to sign up and purchase books or audio-books at RBO. These requests are then processed by employees and finally validated by administrators.
 
 ## Features
 
