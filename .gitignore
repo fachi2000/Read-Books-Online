@@ -43,5 +43,5 @@ public/
 #Environment variables
 .env
 
-#Slelenium front-end tests
+#Selenium front-end tests
 selenium-tests
