@@ -3,7 +3,7 @@
 
 A CRUD application to manage purchase requests and employees featuring ticket status tracking, email notifications, and real-time chat.
 
-Architected like Jason Taylor's Clean Architecture, it's built with a full Typescript stack: MongoDB and Mongoose for persistence; Node, Express, yup, tsyringe, and bcrypt in the backend; HTML, CSS, Vue, and Socket.io in the frontend; and Mocha, Chai, and Cypress for testing.
+Architected like Jason Taylor's Clean Architecture, it's built with a full Typescript stack: MongoDB and Mongoose for persistence; Node, Express, and bcrypt in the backend; HTML, CSS, React, and Socket.io in the frontend; and Mocha, Chai, and Mocha for testing.
                 
 ## /packages Structure
 
@@ -18,9 +18,6 @@ Functionality available to all other projects:
 - Unit tests
 
 ### /backend
-
-Modelled on Jason Taylor's
-[Clean Architecture](https://github.com/jasontaylordev/CleanArchitecture#overview):
 
 - API and socket endpoints for frontend
 - Authentication
