@@ -29,8 +29,6 @@ var chat = chatSocket.of("/chat").on("connection", function (socket) {
 
 var app = express();
 
-app.use(cors());
-
 // adding cors module
 app.use(cors());
 
