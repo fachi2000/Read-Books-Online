@@ -5,11 +5,7 @@ A CRUD application to manage purchase requests and employees featuring ticket st
 
 It's built with a full JavaScript stack: MongoDB and Mongoose for persistence; Node, Express, and bcrypt in the backend; HTML, CSS, React, and Socket.io in the frontend; and Chai, and Mocha for testing.
                 
-## /packages Structure
-
-Source code for the application
-
-### /core
+### Core
 
 Functionality available to all other projects:
 
@@ -17,7 +13,7 @@ Functionality available to all other projects:
 - Utility functions
 - Unit tests
 
-### /backend
+### Back-end
 
 - API and socket endpoints for frontend
 - Authentication
@@ -28,7 +24,7 @@ Functionality available to all other projects:
 - Error handling
 - Unit & integration tests
 
-### /client
+### Client
 
 Middleman between the /backend and /frontend:
 
@@ -37,7 +33,7 @@ Middleman between the /backend and /frontend:
 - Javascript Proxy provider for the API type definition
 - Unit tests
 
-### /frontend
+### Front-end
 
 Single-page application served as a website:
 
