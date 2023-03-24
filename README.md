@@ -44,3 +44,4 @@ Single-page application served as a website:
 - Application logic
 - Error handling
 - End-to-end tests
+- Selenium tests
